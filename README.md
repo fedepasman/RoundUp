@@ -65,7 +65,7 @@ npm run dev
 | v0.7.0 | Historial y evolución ✅ |
 | v0.8.0 | Rankings ✅ |
 | v0.9.0 | PWA y ajustes ✅ |
-| v1.0.0 | MVP estable 🔜 |
+| v1.0.0 | MVP estable ✅ |
 
 **Post-MVP:** login de alumnos con vista de sus métricas, más estados de asistencia (justificado, tarde, lesionado), campos extra de alumno (email, DNI, peso, altura), CRUD de ejercicios, modo offline.
 
