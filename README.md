@@ -2,6 +2,8 @@
 
 **RoundUp Training Tracker** — app web mobile-first para el seguimiento de alumnos que entrenan: asistencia, mediciones de ejercicios, evolución y rankings. Pensada para uso interno de profesores y administradores, con arquitectura preparada para escalar.
 
+🌐 **Producción:** [round-up-one.vercel.app](https://round-up-one.vercel.app) · **Inscripción pública:** [/inscripcion](https://round-up-one.vercel.app/inscripcion)
+
 ## Stack
 
 - [Next.js](https://nextjs.org) (App Router) + TypeScript
@@ -23,7 +25,7 @@
 ## Instalación local
 
 ```bash
-git clone <repo-url> && cd ROUNDUP
+git clone https://github.com/fedepasman/RoundUp.git && cd RoundUp
 npm install
 cp .env.example .env.local   # completar con tus credenciales
 npm run dev
@@ -55,15 +57,15 @@ npm run dev
 | Versión | Alcance |
 |---|---|
 | v0.1.0 | Setup inicial ✅ |
-| v0.2.0 | Auth, roles y alta de usuarios |
-| v0.3.0 | Alumnos + formulario público |
-| v0.4.0 | Ejercicios precargados |
-| v0.5.0 | Carga de mediciones |
-| v0.6.0 | Asistencia |
-| v0.7.0 | Historial y evolución |
-| v0.8.0 | Rankings |
-| v0.9.0 | PWA y ajustes |
-| v1.0.0 | MVP estable |
+| v0.2.0 | Auth, roles y alta de usuarios ✅ |
+| v0.3.0 | Alumnos + formulario público ✅ |
+| v0.4.0 | Ejercicios precargados ✅ |
+| v0.5.0 | Carga de mediciones ✅ |
+| v0.6.0 | Asistencia ✅ |
+| v0.7.0 | Historial y evolución ✅ |
+| v0.8.0 | Rankings ✅ |
+| v0.9.0 | PWA y ajustes ✅ |
+| v1.0.0 | MVP estable 🔜 |
 
 **Post-MVP:** login de alumnos con vista de sus métricas, más estados de asistencia (justificado, tarde, lesionado), campos extra de alumno (email, DNI, peso, altura), CRUD de ejercicios, modo offline.
 
