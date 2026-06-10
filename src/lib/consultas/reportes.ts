@@ -21,6 +21,29 @@ type MedicionCruda = {
 };
 
 /**
+ * Fechas únicas donde hay mediciones para un ejercicio (ordenadas asc).
+ * Sirve para navegación anterior/siguiente.
+ */
+export async function obtenerFechasDisponibles(
+  supabase: SupabaseClient,
+  ejercicioId: string,
+): Promise<string[]> {
+  const { data, error } = await supabase
+    .from("mediciones")
+    .select("fecha")
+    .eq("ejercicio_id", ejercicioId)
+    .order("fecha", { ascending: true });
+
+  if (error) throw error;
+
+  const fechas = new Set<string>();
+  for (const m of (data ?? []) as { fecha: string }[]) {
+    fechas.add(m.fecha);
+  }
+  return [...fechas];
+}
+
+/**
  * Resultados de un ejercicio en una fecha: una fila por alumno activo
  * con medición ese día, con sus valores por módulo y el total (suma).
  * El orden lo decide la página según la dirección del ejercicio.

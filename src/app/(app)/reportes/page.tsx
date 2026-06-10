@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { obtenerEjerciciosConModulos } from "@/lib/consultas/ejercicios";
-import { obtenerReporte } from "@/lib/consultas/reportes";
+import { obtenerFechasDisponibles, obtenerReporte } from "@/lib/consultas/reportes";
 import { formatearValor } from "@/lib/evolucion";
 import { formatearEtapas } from "@/lib/etapas";
 import { fechaLocalISO, formatearFecha } from "@/lib/fechas";
@@ -44,6 +46,17 @@ export default async function PaginaReportes({
   const conTotal = modulos.length > 1;
   const direccion = modulos[0]?.direccion_ranking ?? "desc";
 
+  const fechasDisponibles = await obtenerFechasDisponibles(
+    supabase,
+    ejercicio.id,
+  );
+  const indiceFecha = fechasDisponibles.indexOf(fecha);
+  const fechaAnterior = indiceFecha > 0 ? fechasDisponibles[indiceFecha - 1] : null;
+  const fechaSiguiente =
+    indiceFecha >= 0 && indiceFecha < fechasDisponibles.length - 1
+      ? fechasDisponibles[indiceFecha + 1]
+      : null;
+
   const filas = await obtenerReporte(supabase, ejercicio.id, fecha);
   filas.sort((a, b) =>
     direccion === "desc" ? b.total - a.total : a.total - b.total,
@@ -53,11 +66,47 @@ export default async function PaginaReportes({
     <div className="flex flex-col gap-4">
       <h1 className="font-display text-3xl uppercase">Reportes</h1>
 
-      <SelectorReporte
-        ejercicios={ejercicios}
-        ejercicioId={ejercicio.id}
-        fecha={fecha}
-      />
+      <div className="flex flex-col gap-3">
+        <SelectorReporte
+          ejercicios={ejercicios}
+          ejercicioId={ejercicio.id}
+          fecha={fecha}
+        />
+
+        {(fechaAnterior || fechaSiguiente) && (
+          <div className="flex gap-2">
+            {fechaAnterior ? (
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex-1"
+                asChild
+              >
+                <Link href={`/reportes?ejercicio=${ejercicio.id}&fecha=${fechaAnterior}`}>
+                  <ChevronLeft className="mr-1 size-4" />
+                  Anterior
+                </Link>
+              </Button>
+            ) : (
+              <div className="flex-1" />
+            )}
+
+            {fechaSiguiente && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex-1"
+                asChild
+              >
+                <Link href={`/reportes?ejercicio=${ejercicio.id}&fecha=${fechaSiguiente}`}>
+                  Siguiente
+                  <ChevronRight className="ml-1 size-4" />
+                </Link>
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
 
       <p className="text-xs text-muted-foreground">
         {filas.length === 0
