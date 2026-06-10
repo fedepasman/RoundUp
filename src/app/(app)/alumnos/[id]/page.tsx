@@ -13,6 +13,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
+import { obtenerRanking } from "@/lib/consultas/rankings";
 import { calcularEdad, formatearFecha } from "@/lib/fechas";
 import { createClient } from "@/lib/supabase/server";
 
@@ -78,6 +79,26 @@ export default async function PaginaFichaAlumno({
         };
       }),
     }),
+  );
+
+  // Posición del alumno en el ranking de cada módulo que midió.
+  const modulosMedidos = new Map(
+    mediciones.flatMap((m) =>
+      m.valores.map((v) => [v.modulo_id, v.direccion_ranking] as const),
+    ),
+  );
+  const rankings = await Promise.all(
+    [...modulosMedidos.entries()].map(async ([moduloId, direccion]) => {
+      const ranking = await obtenerRanking(supabase, moduloId, direccion);
+      const posicion = ranking.findIndex((p) => p.alumno_id === id);
+      return [
+        moduloId,
+        { posicion: posicion + 1, total: ranking.length },
+      ] as const;
+    }),
+  );
+  const posiciones = Object.fromEntries(
+    rankings.filter(([, r]) => r.posicion > 0),
   );
 
   const totalAsistencias = asistencias?.length ?? 0;
@@ -178,7 +199,7 @@ export default async function PaginaFichaAlumno({
         </TabsContent>
 
         <TabsContent value="evolucion">
-          <EvolucionAlumno mediciones={mediciones} />
+          <EvolucionAlumno mediciones={mediciones} posiciones={posiciones} />
         </TabsContent>
       </Tabs>
     </div>
