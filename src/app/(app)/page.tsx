@@ -27,11 +27,16 @@ export default async function PaginaInicio() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data: perfil } = await supabase
-    .from("profiles")
-    .select("nombre")
-    .eq("id", user!.id)
-    .single();
+  const [{ data: perfil }, { count: totalAlumnos }, { data: ultimosAlumnos }] =
+    await Promise.all([
+      supabase.from("profiles").select("nombre").eq("id", user!.id).single(),
+      supabase.from("alumnos").select("*", { count: "exact", head: true }),
+      supabase
+        .from("alumnos")
+        .select("id, nombre, apellido, origen")
+        .order("created_at", { ascending: false })
+        .limit(3),
+    ]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -66,9 +71,40 @@ export default async function PaginaInicio() {
           Resumen
         </h2>
         <Card>
+          <CardContent className="flex items-baseline justify-between p-4">
+            <span className="text-sm text-muted-foreground">
+              Alumnos totales
+            </span>
+            <span className="numeros-marca text-3xl">{totalAlumnos ?? 0}</span>
+          </CardContent>
+        </Card>
+        {!!ultimosAlumnos?.length && (
+          <Card>
+            <CardContent className="flex flex-col gap-2 p-4">
+              <span className="text-sm text-muted-foreground">
+                Últimos alumnos
+              </span>
+              <ul className="flex flex-col gap-1">
+                {ultimosAlumnos.map((alumno) => (
+                  <li key={alumno.id}>
+                    <Link
+                      href={`/alumnos/${alumno.id}`}
+                      className="flex items-center justify-between text-sm font-medium"
+                    >
+                      {alumno.nombre} {alumno.apellido}
+                      <span className="text-xs text-muted-foreground">
+                        {alumno.origen === "formulario" ? "se inscribió" : ""}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+        )}
+        <Card>
           <CardContent className="p-4 text-sm text-muted-foreground">
-            Acá vas a ver el total de alumnos, las mediciones y asistencias
-            recientes. Se completa en las próximas etapas.
+            Mediciones y asistencias recientes llegan en las próximas etapas.
           </CardContent>
         </Card>
       </section>
