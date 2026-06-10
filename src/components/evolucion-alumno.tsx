@@ -54,17 +54,23 @@ export function EvolucionAlumno({
   mediciones,
   posiciones = {},
   posicionesTotales = {},
+  ejercicioIdInicial,
 }: {
   mediciones: MedicionHistorial[];
   posiciones?: Record<string, { posicion: number; total: number }>;
   posicionesTotales?: Record<string, { posicion: number; total: number }>;
+  ejercicioIdInicial?: string;
 }) {
   const ejercicios = [
     ...new Map(
       mediciones.map((m) => [m.ejercicio_id, m.ejercicio_nombre]),
     ).entries(),
   ];
-  const [ejercicioId, setEjercicioId] = useState(ejercicios[0]?.[0] ?? "");
+  const [ejercicioId, setEjercicioId] = useState(
+    ejercicioIdInicial && ejercicios.some((e) => e[0] === ejercicioIdInicial)
+      ? ejercicioIdInicial
+      : ejercicios[0]?.[0] ?? "",
+  );
 
   if (!mediciones.length) {
     return (

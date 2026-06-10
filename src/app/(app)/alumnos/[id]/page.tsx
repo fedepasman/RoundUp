@@ -21,10 +21,13 @@ export const metadata: Metadata = { title: "Ficha de alumno" };
 
 export default async function PaginaFichaAlumno({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ ejercicio?: string }>;
 }) {
   const { id } = await params;
+  const { ejercicio: ejercicioIdParam } = await searchParams;
   const supabase = await createClient();
 
   const { data: alumno } = await supabase
@@ -227,6 +230,7 @@ export default async function PaginaFichaAlumno({
             mediciones={mediciones}
             posiciones={posiciones}
             posicionesTotales={posicionesTotales}
+            ejercicioIdInicial={ejercicioIdParam}
           />
         </TabsContent>
       </Tabs>

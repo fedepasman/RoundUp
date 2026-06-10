@@ -83,7 +83,7 @@ export default async function PaginaRankings({
         <ul className="flex flex-col gap-2">
           {ranking.map((puesto, indice) => (
             <li key={puesto.alumno_id}>
-              <Link href={`/alumnos/${puesto.alumno_id}`}>
+              <Link href={`/alumnos/${puesto.alumno_id}?ejercicio=${ejercicio.id}`}>
                 <Card
                   className={cn(
                     indice === 0 && "border-yellow-400 bg-yellow-100",

@@ -101,7 +101,7 @@ export default async function PaginaReportes({
                   <tr key={fila.alumno_id} className="border-b last:border-b-0">
                     <td className="sticky left-0 bg-card px-3 py-3">
                       <Link
-                        href={`/alumnos/${fila.alumno_id}`}
+                        href={`/alumnos/${fila.alumno_id}?ejercicio=${ejercicio.id}`}
                         className="font-medium whitespace-nowrap hover:underline"
                       >
                         {fila.apellido}, {fila.nombre}
