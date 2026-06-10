@@ -47,9 +47,11 @@ export type MedicionHistorial = {
 export function EvolucionAlumno({
   mediciones,
   posiciones = {},
+  posicionesTotales = {},
 }: {
   mediciones: MedicionHistorial[];
   posiciones?: Record<string, { posicion: number; total: number }>;
+  posicionesTotales?: Record<string, { posicion: number; total: number }>;
 }) {
   const ejercicios = [
     ...new Map(
@@ -218,6 +220,108 @@ export function EvolucionAlumno({
           );
         })}
 
+      {/* Tarjeta de total general (solo si hay más de un módulo) */}
+      {modulos.length > 1 && (() => {
+        const tipoTotal = modulos[0]?.tipo_medicion ?? "numero";
+        const serieTotales = delEjercicio.map((m) => ({
+          fecha: m.fecha,
+          valor: m.valores.reduce((s, v) => s + v.valor, 0),
+        }));
+        const actual = serieTotales.at(-1);
+        const anterior = serieTotales.at(-2);
+        const mejora =
+          actual && anterior
+            ? calcularMejora(anterior.valor, actual.valor, "desc")
+            : null;
+        const posTotal = posicionesTotales[ejercicioId];
+        return (
+          <Card>
+            <CardContent className="flex flex-col gap-3 p-4">
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <p className="text-sm font-semibold">Total general</p>
+                  <p className="text-xs text-muted-foreground">
+                    {serieTotales.length}{" "}
+                    {serieTotales.length === 1 ? "medición" : "mediciones"}{" "}
+                    · suma de {modulos.length} módulos
+                  </p>
+                  {posTotal && posTotal.total > 1 && (
+                    <p className="pt-1 text-xs font-semibold text-primary">
+                      #{posTotal.posicion} de {posTotal.total} en el ranking
+                    </p>
+                  )}
+                </div>
+                <div className="text-right">
+                  <p className="numeros-marca text-2xl">
+                    {actual ? formatearValor(actual.valor, tipoTotal) : "—"}
+                  </p>
+                  {mejora !== null && (
+                    <p
+                      className={cn(
+                        "flex items-center justify-end gap-1 text-xs font-semibold",
+                        mejora >= 0 ? "text-success" : "text-destructive",
+                      )}
+                    >
+                      {mejora >= 0 ? (
+                        <TrendingUp className="size-3" />
+                      ) : (
+                        <TrendingDown className="size-3" />
+                      )}
+                      {mejora > 0 ? "+" : ""}
+                      {mejora}% vs anterior
+                    </p>
+                  )}
+                </div>
+              </div>
+              {serieTotales.length >= 2 && (
+                <ResponsiveContainer width="100%" height={140}>
+                  <LineChart
+                    data={serieTotales}
+                    margin={{ top: 8, right: 8, bottom: 0, left: -16 }}
+                  >
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      stroke="var(--border)"
+                    />
+                    <XAxis
+                      dataKey="fecha"
+                      tickFormatter={(f: string) =>
+                        formatearFecha(f).slice(0, 5)
+                      }
+                      tick={{ fontSize: 11 }}
+                      stroke="var(--muted-foreground)"
+                    />
+                    <YAxis
+                      tick={{ fontSize: 11 }}
+                      stroke="var(--muted-foreground)"
+                      tickFormatter={(v: number) =>
+                        formatearValor(v, tipoTotal)
+                      }
+                      width={48}
+                      domain={["auto", "auto"]}
+                    />
+                    <Tooltip
+                      formatter={(v) => [
+                        formatearValor(Number(v), tipoTotal),
+                        "Total",
+                      ]}
+                      labelFormatter={(f) => formatearFecha(String(f))}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="valor"
+                      stroke="var(--primary)"
+                      strokeWidth={2}
+                      dot={{ r: 3, fill: "var(--primary)" }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              )}
+            </CardContent>
+          </Card>
+        );
+      })()}
+
       {/* Historial completo del ejercicio */}
       <Card>
         <CardContent className="flex flex-col p-4">
@@ -234,11 +338,18 @@ export function EvolucionAlumno({
                   {formatearFecha(m.fecha)}
                 </span>
                 <span className="numeros-marca text-right">
-                  {m.valores
-                    .slice()
-                    .sort((a, b) => a.orden - b.orden)
-                    .map((v) => formatearValor(v.valor, v.tipo_medicion))
-                    .join(" · ")}
+                  {(() => {
+                    const sorted = m.valores
+                      .slice()
+                      .sort((a, b) => a.orden - b.orden);
+                    const partes = sorted.map((v) =>
+                      formatearValor(v.valor, v.tipo_medicion),
+                    );
+                    if (sorted.length <= 1) return partes.join(" · ");
+                    const total = sorted.reduce((s, v) => s + v.valor, 0);
+                    const tipo = sorted[0]?.tipo_medicion ?? "numero";
+                    return `${partes.join(" · ")} = ${formatearValor(total, tipo)}`;
+                  })()}
                 </span>
               </div>
             ))}

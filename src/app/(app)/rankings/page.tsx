@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { obtenerEjerciciosConModulos } from "@/lib/consultas/ejercicios";
-import { obtenerRanking } from "@/lib/consultas/rankings";
+import { obtenerRanking, obtenerRankingTotal } from "@/lib/consultas/rankings";
 import { formatearValor } from "@/lib/evolucion";
 import { formatearFecha } from "@/lib/fechas";
 import { createClient } from "@/lib/supabase/server";
@@ -37,13 +37,17 @@ export default async function PaginaRankings({
 
   const ejercicio =
     ejercicios.find((e) => e.id === params.ejercicio) ?? ejercicios[0];
-  const modulo =
-    ejercicio.ejercicio_modulos.find((m) => m.id === params.modulo) ??
-    ejercicio.ejercicio_modulos[0];
+  const esTotal = params.modulo === "__total__";
+  const modulo = esTotal
+    ? null
+    : (ejercicio.ejercicio_modulos.find((m) => m.id === params.modulo) ??
+      ejercicio.ejercicio_modulos[0]);
 
-  const ranking = modulo
-    ? await obtenerRanking(supabase, modulo.id, modulo.direccion_ranking)
-    : [];
+  const ranking = esTotal
+    ? await obtenerRankingTotal(supabase, ejercicio.id)
+    : modulo
+      ? await obtenerRanking(supabase, modulo.id, modulo.direccion_ranking)
+      : [];
 
   return (
     <div className="flex flex-col gap-4">
@@ -52,10 +56,14 @@ export default async function PaginaRankings({
       <SelectorRanking
         ejercicios={ejercicios}
         ejercicioId={ejercicio.id}
-        moduloId={modulo?.id ?? ""}
+        moduloId={esTotal ? "__total__" : (modulo?.id ?? "")}
       />
 
-      {modulo && (
+      {esTotal ? (
+        <p className="text-xs text-muted-foreground">
+          Suma de todos los módulos. Mayor total gana.
+        </p>
+      ) : modulo && (
         <p className="text-xs text-muted-foreground">
           {modulo.direccion_ranking === "desc"
             ? "Gana la marca más alta."
@@ -98,9 +106,10 @@ export default async function PaginaRankings({
                       </p>
                     </div>
                     <span className="numeros-marca shrink-0 text-2xl">
-                      {modulo &&
-                        formatearValor(puesto.mejorValor, modulo.tipo_medicion)}
-                      {modulo?.unidad && (
+                      {esTotal
+                        ? puesto.mejorValor
+                        : modulo && formatearValor(puesto.mejorValor, modulo.tipo_medicion)}
+                      {!esTotal && modulo?.unidad && (
                         <span className="ml-1 text-xs font-normal text-muted-foreground">
                           {modulo.unidad}
                         </span>

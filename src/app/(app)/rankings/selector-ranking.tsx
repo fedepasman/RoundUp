@@ -63,6 +63,9 @@ export function SelectorRanking({
                   {m.nombre}
                 </SelectItem>
               ))}
+              {ejercicio.ejercicio_modulos.length > 1 && (
+                <SelectItem value="__total__">Total general</SelectItem>
+              )}
             </SelectContent>
           </Select>
         </div>

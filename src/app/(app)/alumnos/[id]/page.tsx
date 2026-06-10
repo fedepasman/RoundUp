@@ -13,7 +13,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
-import { obtenerRanking } from "@/lib/consultas/rankings";
+import { obtenerRanking, obtenerRankingTotal } from "@/lib/consultas/rankings";
 import { calcularEdad, formatearFecha } from "@/lib/fechas";
 import { createClient } from "@/lib/supabase/server";
 
@@ -99,6 +99,28 @@ export default async function PaginaFichaAlumno({
   );
   const posiciones = Object.fromEntries(
     rankings.filter(([, r]) => r.posicion > 0),
+  );
+
+  // Total rankings: one per ejercicio that has > 1 module
+  const ejerciciosConMultiplesModulos = [
+    ...new Map(
+      mediciones
+        .filter((m) => m.valores.length > 1)
+        .map((m) => [m.ejercicio_id, true] as const),
+    ).keys(),
+  ];
+  const rankingsTotales = await Promise.all(
+    ejerciciosConMultiplesModulos.map(async (ejercicioId) => {
+      const ranking = await obtenerRankingTotal(supabase, ejercicioId);
+      const posicion = ranking.findIndex((p) => p.alumno_id === id);
+      return [
+        ejercicioId,
+        { posicion: posicion + 1, total: ranking.length },
+      ] as const;
+    }),
+  );
+  const posicionesTotales = Object.fromEntries(
+    rankingsTotales.filter(([, r]) => r.posicion > 0),
   );
 
   const totalAsistencias = asistencias?.length ?? 0;
@@ -199,7 +221,11 @@ export default async function PaginaFichaAlumno({
         </TabsContent>
 
         <TabsContent value="evolucion">
-          <EvolucionAlumno mediciones={mediciones} posiciones={posiciones} />
+          <EvolucionAlumno
+            mediciones={mediciones}
+            posiciones={posiciones}
+            posicionesTotales={posicionesTotales}
+          />
         </TabsContent>
       </Tabs>
     </div>

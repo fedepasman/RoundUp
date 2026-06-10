@@ -15,7 +15,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { formatearValor } from "@/lib/evolucion";
 import { fechaLocalISO } from "@/lib/fechas";
+import { aSegundos } from "@/lib/tiempo";
 import type { EjercicioConModulos } from "@/types/ejercicios";
 
 import { guardarMedicion } from "./actions";
@@ -35,6 +37,7 @@ export function FormularioMedicion({
   const [busqueda, setBusqueda] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [duplicado, setDuplicado] = useState(false);
+  const [valoresLive, setValoresLive] = useState<Record<string, string>>({});
   // Cambiar la key reinicia los inputs de valores para el próximo alumno.
   const [rondaCarga, setRondaCarga] = useState(0);
   const formRef = useRef<HTMLFormElement>(null);
@@ -68,6 +71,7 @@ export function FormularioMedicion({
       setAlumno(null);
       setBusqueda("");
       setDuplicado(false);
+      setValoresLive({});
       setRondaCarga((n) => n + 1);
     });
   }
@@ -84,6 +88,7 @@ export function FormularioMedicion({
     setAlumno(null);
     setDuplicado(false);
     setError(null);
+    setValoresLive({});
     setRondaCarga((n) => n + 1);
   }
 
@@ -212,6 +217,12 @@ export function FormularioMedicion({
                   name={`valor_${modulo.id}`}
                   required
                   className="numeros-marca h-12 text-lg"
+                  onChange={(e) =>
+                    setValoresLive((prev) => ({
+                      ...prev,
+                      [modulo.id]: e.target.value,
+                    }))
+                  }
                   {...(modulo.tipo_medicion === "tiempo"
                     ? {
                         type: "text",
@@ -230,6 +241,41 @@ export function FormularioMedicion({
                 />
               </div>
             ))}
+
+            {/* Total en vivo: solo cuando el ejercicio tiene > 1 módulo y todos tienen valor */}
+            {ejercicio.ejercicio_modulos.length > 1 && (() => {
+              const modulos = ejercicio.ejercicio_modulos
+                .slice()
+                .sort((a, b) => a.orden - b.orden);
+              const numericos = modulos.map((m) => {
+                const raw = (valoresLive[m.id] ?? "").trim();
+                if (!raw) return null;
+                if (m.tipo_medicion === "tiempo") {
+                  const s = aSegundos(raw) ?? 0;
+                  return s > 0 ? s : null;
+                }
+                const n = parseFloat(raw);
+                return isNaN(n) || n < 0 ? null : n;
+              });
+              if (numericos.some((v) => v === null)) return null;
+              const total = (numericos as number[]).reduce((s, v) => s + v, 0);
+              const tipo = modulos[0]?.tipo_medicion ?? "numero";
+              return (
+                <div className="flex items-center justify-between border-t pt-3">
+                  <span className="text-sm font-semibold text-muted-foreground">
+                    Total
+                  </span>
+                  <span className="numeros-marca text-xl font-bold">
+                    {formatearValor(total, tipo)}
+                    {modulos[0]?.unidad && (
+                      <span className="ml-1 text-xs font-normal text-muted-foreground">
+                        {modulos[0].unidad}
+                      </span>
+                    )}
+                  </span>
+                </div>
+              );
+            })()}
           </CardContent>
         </Card>
       )}
