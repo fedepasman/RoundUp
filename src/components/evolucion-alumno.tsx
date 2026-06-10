@@ -22,9 +22,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { calcularMejora, formatearValor } from "@/lib/evolucion";
+import { formatearEtapas } from "@/lib/etapas";
 import { formatearFecha } from "@/lib/fechas";
 import { cn } from "@/lib/utils";
-import type { DireccionRanking, TipoMedicion } from "@/types/ejercicios";
+import type {
+  DireccionRanking,
+  Etapa,
+  TipoMedicion,
+} from "@/types/ejercicios";
 
 export type ValorMedido = {
   modulo_id: string;
@@ -33,6 +38,7 @@ export type ValorMedido = {
   direccion_ranking: DireccionRanking;
   unidad: string | null;
   orden: number;
+  etapas: Etapa[] | null;
   valor: number;
 };
 
@@ -149,7 +155,9 @@ export function EvolucionAlumno({
                   <div className="text-right">
                     <p className="numeros-marca text-2xl">
                       {actual
-                        ? formatearValor(actual.valor, modulo.tipo_medicion)
+                        ? modulo.etapas
+                          ? formatearEtapas(actual.valor, modulo.etapas)
+                          : formatearValor(actual.valor, modulo.tipo_medicion)
                         : "—"}
                     </p>
                     {mejora !== null && (
@@ -343,7 +351,9 @@ export function EvolucionAlumno({
                       .slice()
                       .sort((a, b) => a.orden - b.orden);
                     const partes = sorted.map((v) =>
-                      formatearValor(v.valor, v.tipo_medicion),
+                      v.etapas
+                        ? formatearEtapas(v.valor, v.etapas)
+                        : formatearValor(v.valor, v.tipo_medicion),
                     );
                     if (sorted.length <= 1) return partes.join(" · ");
                     const total = sorted.reduce((s, v) => s + v.valor, 0);

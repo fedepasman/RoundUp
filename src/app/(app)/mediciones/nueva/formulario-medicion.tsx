@@ -20,6 +20,7 @@ import { fechaLocalISO } from "@/lib/fechas";
 import { aSegundos } from "@/lib/tiempo";
 import type { EjercicioConModulos } from "@/types/ejercicios";
 
+import { EtapasMedicion } from "./etapas-medicion";
 import { guardarMedicion } from "./actions";
 
 type AlumnoItem = { id: string; nombre: string; apellido: string };
@@ -206,41 +207,55 @@ export function FormularioMedicion({
       {alumno && ejercicio && (
         <Card key={`${ejercicio.id}-${rondaCarga}`}>
           <CardContent className="flex flex-col gap-4 p-4">
-            {ejercicio.ejercicio_modulos.map((modulo) => (
-              <div key={modulo.id} className="flex flex-col gap-2">
-                <Label htmlFor={`valor_${modulo.id}`}>
-                  {modulo.nombre}
-                  {modulo.unidad ? ` (${modulo.unidad})` : ""}
-                </Label>
-                <Input
-                  id={`valor_${modulo.id}`}
-                  name={`valor_${modulo.id}`}
-                  required
-                  className="numeros-marca h-12 text-lg"
-                  onChange={(e) =>
-                    setValoresLive((prev) => ({
-                      ...prev,
-                      [modulo.id]: e.target.value,
-                    }))
-                  }
-                  {...(modulo.tipo_medicion === "tiempo"
-                    ? {
-                        type: "text",
-                        inputMode: "numeric" as const,
-                        placeholder: "mm:ss",
-                        pattern: "\\d{1,3}(:[0-5]?\\d)?",
-                        title: "Formato mm:ss, por ejemplo 1:35",
-                      }
-                    : {
-                        type: "number",
-                        inputMode: "numeric" as const,
-                        min: 0,
-                        step: modulo.tipo_medicion === "numero" ? "0.01" : "1",
-                        placeholder: "0",
-                      })}
-                />
-              </div>
-            ))}
+            {ejercicio.ejercicio_modulos.map((modulo) =>
+              modulo.etapas?.length ? (
+                <div key={modulo.id} className="flex flex-col gap-2">
+                  <Label>
+                    {modulo.nombre}
+                    {modulo.unidad ? ` (${modulo.unidad})` : ""}
+                  </Label>
+                  <EtapasMedicion
+                    moduloId={modulo.id}
+                    etapas={modulo.etapas}
+                  />
+                </div>
+              ) : (
+                <div key={modulo.id} className="flex flex-col gap-2">
+                  <Label htmlFor={`valor_${modulo.id}`}>
+                    {modulo.nombre}
+                    {modulo.unidad ? ` (${modulo.unidad})` : ""}
+                  </Label>
+                  <Input
+                    id={`valor_${modulo.id}`}
+                    name={`valor_${modulo.id}`}
+                    required
+                    className="numeros-marca h-12 text-lg"
+                    onChange={(e) =>
+                      setValoresLive((prev) => ({
+                        ...prev,
+                        [modulo.id]: e.target.value,
+                      }))
+                    }
+                    {...(modulo.tipo_medicion === "tiempo"
+                      ? {
+                          type: "text",
+                          inputMode: "numeric" as const,
+                          placeholder: "mm:ss",
+                          pattern: "\\d{1,3}(:[0-5]?\\d)?",
+                          title: "Formato mm:ss, por ejemplo 1:35",
+                        }
+                      : {
+                          type: "number",
+                          inputMode: "numeric" as const,
+                          min: 0,
+                          step:
+                            modulo.tipo_medicion === "numero" ? "0.01" : "1",
+                          placeholder: "0",
+                        })}
+                  />
+                </div>
+              ),
+            )}
 
             {/* Total en vivo: solo cuando el ejercicio tiene > 1 módulo y todos tienen valor */}
             {ejercicio.ejercicio_modulos.length > 1 && (() => {

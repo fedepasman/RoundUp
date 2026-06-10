@@ -9,7 +9,7 @@ export async function obtenerEjerciciosConModulos(
   const { data, error } = await supabase
     .from("ejercicios")
     .select(
-      "id, nombre, descripcion, activo, ejercicio_modulos (id, ejercicio_id, nombre, tipo_medicion, direccion_ranking, unidad, orden)",
+      "id, nombre, descripcion, activo, ejercicio_modulos (id, ejercicio_id, nombre, tipo_medicion, direccion_ranking, unidad, orden, etapas)",
     )
     .eq("activo", true)
     .order("nombre")

@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { obtenerEjerciciosConModulos } from "@/lib/consultas/ejercicios";
 import { obtenerReporte } from "@/lib/consultas/reportes";
 import { formatearValor } from "@/lib/evolucion";
+import { formatearEtapas } from "@/lib/etapas";
 import { fechaLocalISO, formatearFecha } from "@/lib/fechas";
 import { createClient } from "@/lib/supabase/server";
 
@@ -111,11 +112,13 @@ export default async function PaginaReportes({
                       return (
                         <td
                           key={m.id}
-                          className="numeros-marca px-3 py-3 text-right"
+                          className="numeros-marca px-3 py-3 text-right whitespace-nowrap"
                         >
                           {valor === undefined
                             ? "—"
-                            : formatearValor(valor, m.tipo_medicion)}
+                            : m.etapas
+                              ? formatearEtapas(valor, m.etapas)
+                              : formatearValor(valor, m.tipo_medicion)}
                         </td>
                       );
                     })}

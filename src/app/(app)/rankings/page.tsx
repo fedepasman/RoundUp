@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { obtenerEjerciciosConModulos } from "@/lib/consultas/ejercicios";
 import { obtenerRanking, obtenerRankingTotal } from "@/lib/consultas/rankings";
 import { formatearValor } from "@/lib/evolucion";
+import { formatearEtapas } from "@/lib/etapas";
 import { formatearFecha } from "@/lib/fechas";
 import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
@@ -113,8 +114,11 @@ export default async function PaginaRankings({
                     <span className="numeros-marca shrink-0 text-2xl">
                       {esTotal
                         ? puesto.mejorValor
-                        : modulo && formatearValor(puesto.mejorValor, modulo.tipo_medicion)}
-                      {!esTotal && modulo?.unidad && (
+                        : modulo?.etapas
+                          ? formatearEtapas(puesto.mejorValor, modulo.etapas)
+                          : modulo &&
+                            formatearValor(puesto.mejorValor, modulo.tipo_medicion)}
+                      {!esTotal && !modulo?.etapas && modulo?.unidad && (
                         <span className="ml-1 text-xs font-normal text-muted-foreground">
                           {modulo.unidad}
                         </span>

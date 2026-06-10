@@ -1,6 +1,9 @@
 export type TipoMedicion = "tiempo" | "cantidad" | "numero";
 export type DireccionRanking = "asc" | "desc";
 
+/** Etapa de un módulo tipo "escalera": un objetivo de reps a completar. */
+export type Etapa = { nombre: string; objetivo: number };
+
 export type Ejercicio = {
   id: string;
   nombre: string;
@@ -16,6 +19,7 @@ export type EjercicioModulo = {
   direccion_ranking: DireccionRanking;
   unidad: string | null;
   orden: number;
+  etapas: Etapa[] | null;
 };
 
 export type EjercicioConModulos = Ejercicio & {
