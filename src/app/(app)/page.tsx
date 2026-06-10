@@ -1,5 +1,6 @@
 import {
   CalendarCheck,
+  ClipboardList,
   ClipboardPlus,
   Trophy,
   Users,
@@ -19,6 +20,7 @@ const ACCESOS = [
   { href: "/asistencia", etiqueta: "Tomar asistencia", Icono: CalendarCheck },
   { href: "/alumnos", etiqueta: "Ver alumnos", Icono: Users },
   { href: "/rankings", etiqueta: "Ver rankings", Icono: Trophy },
+  { href: "/reportes", etiqueta: "Ver reportes", Icono: ClipboardList },
 ] as const;
 
 export default async function PaginaInicio() {
