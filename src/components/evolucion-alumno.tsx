@@ -21,6 +21,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
 import { EtapasVisualizacion } from "@/app/(app)/alumnos/etapas-visualizacion";
 import { calcularMejora, formatearValor } from "@/lib/evolucion";
 import { formatearEtapas } from "@/lib/etapas";
@@ -72,6 +75,12 @@ export function EvolucionAlumno({
       ? ejercicioIdInicial
       : ejercicios[0]?.[0] ?? "",
   );
+  const [indiceMedicion, setIndiceMedicion] = useState(0);
+
+  const handleChangeEjercicio = (v: string) => {
+    setEjercicioId(v);
+    setIndiceMedicion(0);
+  };
 
   if (!mediciones.length) {
     return (
@@ -89,14 +98,16 @@ export function EvolucionAlumno({
     .filter((m) => m.ejercicio_id === ejercicioId)
     .sort((a, b) => a.fecha.localeCompare(b.fecha));
 
-  const modulos = delEjercicio.at(-1)?.valores ?? [];
+  // Limitar índice si está fuera de rango
+  const indiceValido = Math.min(indiceMedicion, delEjercicio.length - 1);
+  const modulos = delEjercicio[indiceValido]?.valores ?? [];
 
   return (
     <div className="flex flex-col gap-4">
       {ejercicios.length > 1 && (
         <div className="flex flex-col gap-2">
           <Label htmlFor="ejercicio-evolucion">Ejercicio</Label>
-          <Select value={ejercicioId} onValueChange={setEjercicioId}>
+          <Select value={ejercicioId} onValueChange={handleChangeEjercicio}>
             <SelectTrigger id="ejercicio-evolucion" className="h-12 w-full">
               <SelectValue />
             </SelectTrigger>
@@ -377,6 +388,35 @@ export function EvolucionAlumno({
             ))}
         </CardContent>
       </Card>
+
+      {/* Navegación de mediciones cuando hay múltiples */}
+      {delEjercicio.length > 1 && (
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex-1"
+            disabled={indiceValido === 0}
+            onClick={() => setIndiceMedicion(indiceValido - 1)}
+          >
+            <ChevronLeft className="mr-1 size-4" />
+            Anterior
+          </Button>
+          <div className="flex flex-1 items-center justify-center text-xs text-muted-foreground">
+            {indiceValido + 1} de {delEjercicio.length}
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex-1"
+            disabled={indiceValido === delEjercicio.length - 1}
+            onClick={() => setIndiceMedicion(indiceValido + 1)}
+          >
+            Siguiente
+            <ChevronRight className="ml-1 size-4" />
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
