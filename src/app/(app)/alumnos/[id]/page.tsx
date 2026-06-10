@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import {
+  EvolucionAlumno,
+  type MedicionHistorial,
+} from "@/components/evolucion-alumno";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -30,12 +34,51 @@ export default async function PaginaFichaAlumno({
 
   if (!alumno) notFound();
 
-  const { data: asistencias } = await supabase
-    .from("asistencias")
-    .select("fecha, estado")
-    .eq("alumno_id", id)
-    .order("fecha", { ascending: false })
-    .limit(30);
+  const [{ data: asistencias }, { data: medicionesCrudas }] =
+    await Promise.all([
+      supabase
+        .from("asistencias")
+        .select("fecha, estado")
+        .eq("alumno_id", id)
+        .order("fecha", { ascending: false })
+        .limit(30),
+      supabase
+        .from("mediciones")
+        .select(
+          "id, fecha, ejercicio_id, ejercicios (nombre), medicion_valores (valor, ejercicio_modulos (id, nombre, tipo_medicion, direccion_ranking, unidad, orden))",
+        )
+        .eq("alumno_id", id)
+        .order("fecha", { ascending: false }),
+    ]);
+
+  const mediciones: MedicionHistorial[] = (medicionesCrudas ?? []).map(
+    (m) => ({
+      id: m.id,
+      fecha: m.fecha,
+      ejercicio_id: m.ejercicio_id,
+      ejercicio_nombre:
+        (m.ejercicios as unknown as { nombre: string })?.nombre ?? "",
+      valores: (m.medicion_valores ?? []).map((v) => {
+        const mod = v.ejercicio_modulos as unknown as {
+          id: string;
+          nombre: string;
+          tipo_medicion: "tiempo" | "cantidad" | "numero";
+          direccion_ranking: "asc" | "desc";
+          unidad: string | null;
+          orden: number;
+        };
+        return {
+          modulo_id: mod.id,
+          modulo_nombre: mod.nombre,
+          tipo_medicion: mod.tipo_medicion,
+          direccion_ranking: mod.direccion_ranking,
+          unidad: mod.unidad,
+          orden: mod.orden,
+          valor: Number(v.valor),
+        };
+      }),
+    }),
+  );
 
   const totalAsistencias = asistencias?.length ?? 0;
   const presentes =
@@ -135,12 +178,7 @@ export default async function PaginaFichaAlumno({
         </TabsContent>
 
         <TabsContent value="evolucion">
-          <Card>
-            <CardContent className="p-4 text-sm text-muted-foreground">
-              Mediciones, gráficos de evolución y rankings llegan en las
-              etapas v0.7.0 y v0.8.0.
-            </CardContent>
-          </Card>
+          <EvolucionAlumno mediciones={mediciones} />
         </TabsContent>
       </Tabs>
     </div>
