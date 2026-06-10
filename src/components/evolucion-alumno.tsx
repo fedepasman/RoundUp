@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { EtapasVisualizacion } from "@/app/(app)/alumnos/etapas-visualizacion";
 import { calcularMejora, formatearValor } from "@/lib/evolucion";
 import { formatearEtapas } from "@/lib/etapas";
 import { formatearFecha } from "@/lib/fechas";
@@ -184,6 +185,11 @@ export function EvolucionAlumno({
                     )}
                   </div>
                 </div>
+
+                {/* Desglose de etapas para módulos con etapas */}
+                {modulo.etapas && actual && (
+                  <EtapasVisualizacion valor={actual.valor} etapas={modulo.etapas} />
+                )}
 
                 {serie.length >= 2 && (
                   <ResponsiveContainer width="100%" height={140}>
