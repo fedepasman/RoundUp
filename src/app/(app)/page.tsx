@@ -27,16 +27,33 @@ export default async function PaginaInicio() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const [{ data: perfil }, { count: totalAlumnos }, { data: ultimosAlumnos }] =
-    await Promise.all([
-      supabase.from("profiles").select("nombre").eq("id", user!.id).single(),
-      supabase.from("alumnos").select("*", { count: "exact", head: true }),
-      supabase
-        .from("alumnos")
-        .select("id, nombre, apellido, origen")
-        .order("created_at", { ascending: false })
-        .limit(3),
-    ]);
+  const [
+    { data: perfil },
+    { count: totalAlumnos },
+    { data: ultimosAlumnos },
+    { data: medicionesRecientes },
+    { data: asistenciasRecientes },
+  ] = await Promise.all([
+    supabase.from("profiles").select("nombre").eq("id", user!.id).single(),
+    supabase.from("alumnos").select("*", { count: "exact", head: true }),
+    supabase
+      .from("alumnos")
+      .select("id, nombre, apellido, origen")
+      .order("created_at", { ascending: false })
+      .limit(3),
+    supabase
+      .from("mediciones")
+      .select(
+        "fecha, alumnos (nombre, apellido), ejercicios (nombre), medicion_valores (valor)",
+      )
+      .order("fecha", { ascending: false })
+      .limit(5),
+    supabase
+      .from("asistencias")
+      .select("fecha, estado, alumnos (nombre, apellido)")
+      .order("fecha", { ascending: false })
+      .limit(5),
+  ]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -102,11 +119,69 @@ export default async function PaginaInicio() {
             </CardContent>
           </Card>
         )}
-        <Card>
-          <CardContent className="p-4 text-sm text-muted-foreground">
-            Mediciones y asistencias recientes llegan en las próximas etapas.
-          </CardContent>
-        </Card>
+        {medicionesRecientes && medicionesRecientes.length > 0 && (
+          <Card>
+            <CardContent className="flex flex-col gap-2 p-4">
+              <span className="text-sm text-muted-foreground">
+                Mediciones recientes
+              </span>
+              <ul className="flex flex-col gap-1">
+                {medicionesRecientes.slice(0, 3).map((m, i) => {
+                  const alumno = m.alumnos as unknown as {
+                    nombre: string;
+                    apellido: string;
+                  };
+                  const ej = m.ejercicios as unknown as { nombre: string };
+                  return (
+                    <li key={i} className="text-xs text-muted-foreground">
+                      {alumno.nombre} {alumno.apellido} —{" "}
+                      <span className="font-medium text-foreground">
+                        {ej.nombre}
+                      </span>{" "}
+                      ({m.fecha})
+                    </li>
+                  );
+                })}
+              </ul>
+            </CardContent>
+          </Card>
+        )}
+
+        {asistenciasRecientes && asistenciasRecientes.length > 0 && (
+          <Card>
+            <CardContent className="flex flex-col gap-2 p-4">
+              <span className="text-sm text-muted-foreground">
+                Asistencias recientes
+              </span>
+              <ul className="flex flex-col gap-1">
+                {asistenciasRecientes.slice(0, 3).map((a, i) => {
+                  const alumno = a.alumnos as unknown as {
+                    nombre: string;
+                    apellido: string;
+                  };
+                  return (
+                    <li key={i} className="text-xs">
+                      <span className="text-muted-foreground">
+                        {alumno.nombre} {alumno.apellido}
+                      </span>{" "}
+                      —{" "}
+                      <span
+                        className={
+                          a.estado === "presente"
+                            ? "font-medium text-green-600"
+                            : "font-medium text-red-600"
+                        }
+                      >
+                        {a.estado}
+                      </span>{" "}
+                      ({a.fecha})
+                    </li>
+                  );
+                })}
+              </ul>
+            </CardContent>
+          </Card>
+        )}
       </section>
     </div>
   );
