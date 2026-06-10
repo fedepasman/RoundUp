@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RoundUp 🥊
 
-## Getting Started
+**RoundUp Training Tracker** — app web mobile-first para el seguimiento de alumnos que entrenan: asistencia, mediciones de ejercicios, evolución y rankings. Pensada para uso interno de profesores y administradores, con arquitectura preparada para escalar.
 
-First, run the development server:
+## Stack
+
+- [Next.js](https://nextjs.org) (App Router) + TypeScript
+- [Supabase](https://supabase.com) — Postgres, Auth y Row Level Security
+- Tailwind CSS v4 + [shadcn/ui](https://ui.shadcn.com)
+- PWA instalable (mobile-first, interfaz en español)
+- Deploy en [Vercel](https://vercel.com)
+
+## Funcionalidades del MVP
+
+- 🔐 Login para profesores y admins (Supabase Auth + roles)
+- 👥 Gestión de alumnos: alta desde la app o por formulario público de inscripción
+- ✅ Toma de asistencia por fecha (presente/ausente)
+- ⏱️ Carga manual de mediciones por ejercicio y módulos (tiempo, cantidad, número)
+- 📈 Ficha del alumno: historial, evolución, gráficos y % de mejora
+- 🏆 Rankings por ejercicio y módulo
+- 🛠️ Pantalla de admin para alta de usuarios
+
+## Instalación local
 
 ```bash
+git clone <repo-url> && cd ROUNDUP
+npm install
+cp .env.example .env.local   # completar con tus credenciales
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Variables de entorno
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Variable | Descripción |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | URL del proyecto Supabase (Settings → API) |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Anon/public key |
+| `SUPABASE_SERVICE_ROLE_KEY` | Service role key — **solo server, nunca en el cliente** |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Configuración de Supabase
 
-## Learn More
+1. Crear (o usar) un proyecto en [supabase.com](https://supabase.com).
+2. Ejecutar en orden las migraciones de `supabase/migrations/` (SQL Editor o `supabase db push`).
+3. Ejecutar `supabase/seed.sql` para los ejercicios precargados.
+4. Crear el primer usuario admin desde Authentication → Users y asignarle rol `admin` en `profiles`.
 
-To learn more about Next.js, take a look at the following resources:
+## Deploy en Vercel
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Importar el repo en Vercel.
+2. Cargar las tres variables de entorno (la service role solo server, nunca con prefijo `NEXT_PUBLIC_`).
+3. Deploy automático desde `main`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Roadmap
 
-## Deploy on Vercel
+| Versión | Alcance |
+|---|---|
+| v0.1.0 | Setup inicial ✅ |
+| v0.2.0 | Auth, roles y alta de usuarios |
+| v0.3.0 | Alumnos + formulario público |
+| v0.4.0 | Ejercicios precargados |
+| v0.5.0 | Carga de mediciones |
+| v0.6.0 | Asistencia |
+| v0.7.0 | Historial y evolución |
+| v0.8.0 | Rankings |
+| v0.9.0 | PWA y ajustes |
+| v1.0.0 | MVP estable |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Post-MVP:** login de alumnos con vista de sus métricas, más estados de asistencia (justificado, tarde, lesionado), campos extra de alumno (email, DNI, peso, altura), CRUD de ejercicios, modo offline.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Estructura
+
+```
+src/app/(public)/inscripcion   formulario público de alumnos
+src/app/(auth)/login           autenticación
+src/app/(app)/                 app protegida (dashboard, alumnos, mediciones, asistencia, rankings)
+src/lib/supabase/              clientes de Supabase (browser, server, admin)
+supabase/migrations/           migraciones SQL versionadas
+```
