@@ -46,8 +46,10 @@ export type MedicionHistorial = {
 
 export function EvolucionAlumno({
   mediciones,
+  posiciones = {},
 }: {
   mediciones: MedicionHistorial[];
+  posiciones?: Record<string, { posicion: number; total: number }>;
 }) {
   const ejercicios = [
     ...new Map(
@@ -134,6 +136,13 @@ export function EvolucionAlumno({
                       {serie.length === 1 ? "medición" : "mediciones"}
                       {modulo.unidad ? ` · ${modulo.unidad}` : ""}
                     </p>
+                    {posiciones[modulo.modulo_id] &&
+                      posiciones[modulo.modulo_id].total > 1 && (
+                        <p className="pt-1 text-xs font-semibold text-primary">
+                          #{posiciones[modulo.modulo_id].posicion} de{" "}
+                          {posiciones[modulo.modulo_id].total} en el ranking
+                        </p>
+                      )}
                   </div>
                   <div className="text-right">
                     <p className="numeros-marca text-2xl">
