@@ -146,16 +146,16 @@ export default async function PaginaFichaAlumno({
         {!alumno.activo && <Badge variant="secondary">Inactivo</Badge>}
       </div>
 
-      <Tabs defaultValue="datos">
+      <Tabs defaultValue="evolucion">
         <TabsList className="w-full">
-          <TabsTrigger value="datos" className="flex-1">
-            Datos
+          <TabsTrigger value="evolucion" className="flex-1">
+            Evolución
           </TabsTrigger>
           <TabsTrigger value="asistencia" className="flex-1">
             Asistencia
           </TabsTrigger>
-          <TabsTrigger value="evolucion" className="flex-1">
-            Evolución
+          <TabsTrigger value="datos" className="flex-1">
+            Datos
           </TabsTrigger>
         </TabsList>
 
