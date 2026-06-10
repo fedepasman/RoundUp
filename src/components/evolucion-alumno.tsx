@@ -167,8 +167,8 @@ export function EvolucionAlumno({
             })
             .filter((p) => p !== null);
 
-          const actual = serie.at(-1);
-          const anterior = serie.at(-2);
+          const actual = serie[indiceValido] ?? serie.at(-1);
+          const anterior = indiceValido > 0 ? serie[indiceValido - 1] : null;
           const mejora =
             actual && anterior
               ? calcularMejora(
@@ -287,8 +287,8 @@ export function EvolucionAlumno({
           fecha: m.fecha,
           valor: m.valores.reduce((s, v) => s + v.valor, 0),
         }));
-        const actual = serieTotales.at(-1);
-        const anterior = serieTotales.at(-2);
+        const actual = serieTotales[indiceValido] ?? serieTotales.at(-1);
+        const anterior = indiceValido > 0 ? serieTotales[indiceValido - 1] : null;
         const mejora =
           actual && anterior
             ? calcularMejora(anterior.valor, actual.valor, "desc")
