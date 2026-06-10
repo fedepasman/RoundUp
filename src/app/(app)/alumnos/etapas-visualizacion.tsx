@@ -16,22 +16,28 @@ export function EtapasVisualizacion({
   valor: number;
   etapas: Etapa[];
 }) {
-  let repsAcumuladas = 0;
-  const nivelAlcanzado = etapas.findIndex((e) => {
-    const proximoTotal = repsAcumuladas + e.objetivo;
-    if (valor >= proximoTotal) {
-      repsAcumuladas = proximoTotal;
-      return false;
-    }
-    return true;
-  });
-
-  const repsEnEtapaActual = Math.max(
-    0,
-    valor - repsAcumuladas,
-  );
-
   const objetivoTotal = etapas.reduce((s, e) => s + e.objetivo, 0);
+  const completadoTodo = valor >= objetivoTotal;
+
+  let repsAcumuladas = 0;
+  let nivelAlcanzado = etapas.length;
+
+  if (!completadoTodo) {
+    nivelAlcanzado = etapas.findIndex((e) => {
+      const proximoTotal = repsAcumuladas + e.objetivo;
+      if (valor >= proximoTotal) {
+        repsAcumuladas = proximoTotal;
+        return false;
+      }
+      return true;
+    });
+    if (nivelAlcanzado === -1) nivelAlcanzado = etapas.length;
+  } else {
+    repsAcumuladas = objetivoTotal;
+  }
+
+  const repsEnEtapaActual = completadoTodo ? 0 : Math.max(0, valor - repsAcumuladas);
+
   const porcentaje =
     objetivoTotal > 0 ? Math.round((valor / objetivoTotal) * 100) : 0;
 
@@ -40,7 +46,7 @@ export function EtapasVisualizacion({
       <ul className="flex flex-col gap-2">
         {etapas.map((etapa, i) => {
           const completa = i < nivelAlcanzado;
-          const actual = i === nivelAlcanzado;
+          const actual = !completadoTodo && i === nivelAlcanzado;
           return (
             <li
               key={i}
@@ -88,7 +94,7 @@ export function EtapasVisualizacion({
         <div className="flex items-baseline justify-between">
           <span className="text-sm font-semibold">Progreso</span>
           <span className="numeros-marca text-sm">
-            {valor}/{objetivoTotal} · {porcentaje}%
+            {Math.min(valor, objetivoTotal)}/{objetivoTotal} · {porcentaje}%
           </span>
         </div>
         <div
