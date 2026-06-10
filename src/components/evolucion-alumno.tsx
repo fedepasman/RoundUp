@@ -122,6 +122,35 @@ export function EvolucionAlumno({
         </div>
       )}
 
+      {/* Navegación de mediciones cuando hay múltiples */}
+      {delEjercicio.length > 1 && (
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex-1"
+            disabled={indiceMedicion === 0}
+            onClick={() => setIndiceMedicion(indiceMedicion - 1)}
+          >
+            <ChevronLeft className="mr-1 size-4" />
+            Anterior
+          </Button>
+          <div className="flex flex-1 items-center justify-center text-xs text-muted-foreground">
+            {Math.min(indiceMedicion, delEjercicio.length - 1) + 1} de {delEjercicio.length}
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex-1"
+            disabled={indiceMedicion >= delEjercicio.length - 1}
+            onClick={() => setIndiceMedicion(indiceMedicion + 1)}
+          >
+            Siguiente
+            <ChevronRight className="ml-1 size-4" />
+          </Button>
+        </div>
+      )}
+
       {/* Una tarjeta por módulo: última marca, % de mejora y gráfico */}
       {modulos
         .slice()
@@ -388,35 +417,6 @@ export function EvolucionAlumno({
             ))}
         </CardContent>
       </Card>
-
-      {/* Navegación de mediciones cuando hay múltiples */}
-      {delEjercicio.length > 1 && (
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex-1"
-            disabled={indiceValido === 0}
-            onClick={() => setIndiceMedicion(indiceValido - 1)}
-          >
-            <ChevronLeft className="mr-1 size-4" />
-            Anterior
-          </Button>
-          <div className="flex flex-1 items-center justify-center text-xs text-muted-foreground">
-            {indiceValido + 1} de {delEjercicio.length}
-          </div>
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex-1"
-            disabled={indiceValido === delEjercicio.length - 1}
-            onClick={() => setIndiceMedicion(indiceValido + 1)}
-          >
-            Siguiente
-            <ChevronRight className="ml-1 size-4" />
-          </Button>
-        </div>
-      )}
     </div>
   );
 }
