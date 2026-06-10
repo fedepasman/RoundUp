@@ -30,6 +30,20 @@ export default async function PaginaFichaAlumno({
 
   if (!alumno) notFound();
 
+  const { data: asistencias } = await supabase
+    .from("asistencias")
+    .select("fecha, estado")
+    .eq("alumno_id", id)
+    .order("fecha", { ascending: false })
+    .limit(30);
+
+  const totalAsistencias = asistencias?.length ?? 0;
+  const presentes =
+    asistencias?.filter((a) => a.estado === "presente").length ?? 0;
+  const porcentajePresente = totalAsistencias
+    ? Math.round((presentes / totalAsistencias) * 100)
+    : null;
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-start justify-between gap-2">
@@ -74,11 +88,50 @@ export default async function PaginaFichaAlumno({
         </TabsContent>
 
         <TabsContent value="asistencia">
-          <Card>
-            <CardContent className="p-4 text-sm text-muted-foreground">
-              El historial de asistencia llega en la etapa v0.6.0.
-            </CardContent>
-          </Card>
+          {totalAsistencias === 0 ? (
+            <Card>
+              <CardContent className="p-4 text-sm text-muted-foreground">
+                Todavía no hay asistencias registradas.
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="flex flex-col gap-2">
+              <Card>
+                <CardContent className="flex items-baseline justify-between p-4">
+                  <span className="text-sm text-muted-foreground">
+                    Presentismo (últimas {totalAsistencias})
+                  </span>
+                  <span className="numeros-marca text-3xl">
+                    {porcentajePresente}%
+                  </span>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="flex flex-col p-4">
+                  {asistencias!.map((a) => (
+                    <div
+                      key={a.fecha}
+                      className="flex items-center justify-between border-b py-2 text-sm last:border-b-0"
+                    >
+                      <span>{formatearFecha(a.fecha)}</span>
+                      <Badge
+                        variant={
+                          a.estado === "presente" ? "default" : "secondary"
+                        }
+                        className={
+                          a.estado === "presente"
+                            ? "bg-success text-success-foreground"
+                            : undefined
+                        }
+                      >
+                        {a.estado === "presente" ? "Presente" : "Ausente"}
+                      </Badge>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            </div>
+          )}
         </TabsContent>
 
         <TabsContent value="evolucion">
