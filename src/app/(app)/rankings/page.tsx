@@ -85,18 +85,18 @@ export default async function PaginaRankings({
               <Link href={`/alumnos/${puesto.alumno_id}`}>
                 <Card
                   className={cn(
-                    indice === 0 && "border-yellow-300 bg-yellow-50",
-                    indice === 1 && "border-slate-300 bg-slate-50",
-                    indice === 2 && "border-amber-300 bg-amber-50",
+                    indice === 0 && "border-yellow-400 bg-yellow-100",
+                    indice === 1 && "border-gray-400 bg-gray-200",
+                    indice === 2 && "border-orange-400 bg-orange-100",
                   )}
                 >
                   <CardContent className="flex items-center gap-3 p-4">
                     <span
                       className={cn(
                         "numeros-marca w-8 shrink-0 text-center text-xl font-bold",
-                        indice === 0 && "text-yellow-500",
-                        indice === 1 && "text-slate-400",
-                        indice === 2 && "text-amber-600",
+                        indice === 0 && "text-yellow-600",
+                        indice === 1 && "text-gray-500",
+                        indice === 2 && "text-orange-700",
                         indice > 2 && "text-muted-foreground",
                       )}
                     >
