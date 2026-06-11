@@ -30,13 +30,11 @@ export default async function PaginaInicio() {
   } = await supabase.auth.getUser();
 
   const [
-    { data: perfil },
     { count: totalAlumnos },
     { data: ultimosAlumnos },
     { data: medicionesRecientes },
     { data: asistenciasRecientes },
   ] = await Promise.all([
-    supabase.from("profiles").select("nombre").eq("id", user!.id).single(),
     supabase.from("alumnos").select("*", { count: "exact", head: true }),
     supabase
       .from("alumnos")
@@ -59,11 +57,6 @@ export default async function PaginaInicio() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <p className="text-muted-foreground">Hola{perfil?.nombre ? `, ${perfil.nombre}` : ""} 👋</p>
-        <h1 className="font-display text-3xl uppercase">Al ring</h1>
-      </div>
-
       <section aria-label="Accesos rápidos" className="grid grid-cols-2 gap-3">
         {ACCESOS.map(({ href, etiqueta, Icono, ...acceso }) => (
           <Link key={href} href={href}>
