@@ -112,23 +112,37 @@ export default async function PaginaRankings({
                         {formatearFecha(puesto.fecha)}
                       </p>
                     </div>
-                    <span className="numeros-marca shrink-0 text-2xl">
-                      {esTotal
-                        ? puesto.mejorValor
-                        : modulo?.etapas
-                          ? puesto.tiempo_segundos
-                            ? `${formatearEtapas(puesto.mejorValor, modulo.etapas)} · ${formatearSegundos(puesto.tiempo_segundos)}`
-                            : formatearEtapas(puesto.mejorValor, modulo.etapas)
-                          : modulo && puesto.tiempo_segundos
-                            ? formatearValorConTiempo(puesto.mejorValor, modulo.tipo_medicion, puesto.tiempo_segundos)
-                            : modulo &&
-                              formatearValor(puesto.mejorValor, modulo.tipo_medicion)}
-                      {!esTotal && !modulo?.etapas && modulo?.unidad && (
-                        <span className="ml-1 text-sm font-normal text-muted-foreground">
-                          {modulo.unidad}
-                        </span>
-                      )}
-                    </span>
+                    {esTotal ? (
+                      <span className="numeros-marca shrink-0 text-2xl">
+                        {puesto.mejorValor}
+                      </span>
+                    ) : modulo?.etapas && puesto.tiempo_segundos ? (
+                      <div className="shrink-0 text-right">
+                        <p className="numeros-marca text-2xl">
+                          {formatearEtapas(puesto.mejorValor, modulo.etapas)}
+                        </p>
+                        <p className="numeros-marca text-lg font-bold text-muted-foreground">
+                          {formatearSegundos(puesto.tiempo_segundos)}
+                        </p>
+                      </div>
+                    ) : modulo?.etapas ? (
+                      <span className="numeros-marca shrink-0 text-2xl">
+                        {formatearEtapas(puesto.mejorValor, modulo.etapas)}
+                      </span>
+                    ) : modulo && puesto.tiempo_segundos ? (
+                      <span className="numeros-marca shrink-0 text-2xl">
+                        {formatearValorConTiempo(puesto.mejorValor, modulo.tipo_medicion, puesto.tiempo_segundos)}
+                      </span>
+                    ) : modulo ? (
+                      <span className="numeros-marca shrink-0 text-2xl">
+                        {formatearValor(puesto.mejorValor, modulo.tipo_medicion)}
+                        {modulo.unidad && (
+                          <span className="ml-1 text-sm font-normal text-muted-foreground">
+                            {modulo.unidad}
+                          </span>
+                        )}
+                      </span>
+                    ) : null}
                   </CardContent>
                 </Card>
               </Link>
