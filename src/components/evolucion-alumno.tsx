@@ -26,6 +26,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { EtapasVisualizacion } from "@/app/(app)/alumnos/etapas-visualizacion";
 import { calcularMejora, formatearValor, formatearValorConTiempo } from "@/lib/evolucion";
+import { formatearSegundos } from "@/lib/tiempo";
 import { formatearEtapas } from "@/lib/etapas";
 import { formatearFecha } from "@/lib/fechas";
 import { cn } from "@/lib/utils";
@@ -204,7 +205,9 @@ export function EvolucionAlumno({
                     <p className="numeros-marca text-2xl">
                       {actual
                         ? modulo.etapas
-                          ? formatearEtapas(actual.valor, modulo.etapas)
+                          ? actual.tiempo_segundos
+                            ? `${formatearEtapas(actual.valor, modulo.etapas)} · ${formatearSegundos(actual.tiempo_segundos)}`
+                            : formatearEtapas(actual.valor, modulo.etapas)
                           : actual.tiempo_segundos
                             ? formatearValorConTiempo(
                                 actual.valor,
@@ -411,7 +414,9 @@ export function EvolucionAlumno({
                       .sort((a, b) => a.orden - b.orden);
                     const partes = sorted.map((v) =>
                       v.etapas
-                        ? formatearEtapas(v.valor, v.etapas)
+                        ? v.tiempo_segundos
+                          ? `${formatearEtapas(v.valor, v.etapas)} · ${formatearSegundos(v.tiempo_segundos)}`
+                          : formatearEtapas(v.valor, v.etapas)
                         : v.tiempo_segundos
                           ? formatearValorConTiempo(
                               v.valor,
