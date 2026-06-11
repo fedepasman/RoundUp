@@ -148,11 +148,8 @@ export function EtapasMedicion({
             type="text"
             inputMode="numeric"
             placeholder="mm:ss"
-            pattern="\\d{1,3}(:[0-5]?\\d)?"
-            title="Formato mm:ss, por ejemplo 15:45"
             value={tiempo}
             onChange={(e) => setTiempo(e.target.value)}
-            required
             className="numeros-marca h-11"
           />
         </div>
