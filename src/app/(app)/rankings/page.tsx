@@ -7,6 +7,7 @@ import { obtenerRanking, obtenerRankingTotal } from "@/lib/consultas/rankings";
 import { formatearValor, formatearValorConTiempo } from "@/lib/evolucion";
 import { formatearEtapas } from "@/lib/etapas";
 import { formatearFecha } from "@/lib/fechas";
+import { formatearSegundos } from "@/lib/tiempo";
 import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
 
@@ -115,7 +116,9 @@ export default async function PaginaRankings({
                       {esTotal
                         ? puesto.mejorValor
                         : modulo?.etapas
-                          ? formatearEtapas(puesto.mejorValor, modulo.etapas)
+                          ? puesto.tiempo_segundos
+                            ? `${formatearEtapas(puesto.mejorValor, modulo.etapas)} · ${formatearSegundos(puesto.tiempo_segundos)}`
+                            : formatearEtapas(puesto.mejorValor, modulo.etapas)
                           : modulo && puesto.tiempo_segundos
                             ? formatearValorConTiempo(puesto.mejorValor, modulo.tipo_medicion, puesto.tiempo_segundos)
                             : modulo &&
