@@ -34,7 +34,7 @@ export async function actualizarMedicion(
 
   const { data: modulos } = await supabase
     .from("medicion_valores")
-    .select("id, modulo_id, ejercicio_modulos (id, nombre, tipo_medicion, etapas)")
+    .select("id, modulo_id, ejercicio_modulos (id, nombre, tipo_medicion, etapas, tiempo_limite_segundos)")
     .eq("medicion_id", medicionId);
 
   if (!modulos?.length) return { ok: false, error: "Medición no encontrada." };
@@ -44,6 +44,7 @@ export async function actualizarMedicion(
       nombre: string;
       tipo_medicion: "tiempo" | "cantidad" | "numero";
       etapas: { objetivo: number }[] | null;
+      tiempo_limite_segundos: number | null;
     };
     const crudo = String(formData.get(`valor_${mv.modulo_id}`) ?? "").trim();
     if (!crudo) return { ok: false, error: `Falta el valor de "${mod.nombre}".` };
@@ -70,7 +71,7 @@ export async function actualizarMedicion(
           if (t && t > 0) tiempo_segundos = t;
         }
       } else {
-        tiempo_segundos = 1800;
+        tiempo_segundos = mod.tiempo_limite_segundos ?? 1800;
       }
     }
 

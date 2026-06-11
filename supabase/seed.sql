@@ -43,7 +43,7 @@ from ejercicio,
     ('Burpees 50"x10"',  'cantidad', 'desc', 'reps', 5)
   ) as m (nombre, tipo, dir, unidad, orden);
 
--- Testeo: un módulo tipo "escalera" de 800 reps en 7 etapas.
+-- Testeo: un módulo tipo "escalera" de 800 reps en 7 etapas, tiempo límite 30 min.
 -- Se guarda el total de reps completadas; el % sale de la suma de objetivos.
 with ejercicio as (
   insert into public.ejercicios (nombre, descripcion)
@@ -52,7 +52,7 @@ with ejercicio as (
   returning id
 )
 insert into public.ejercicio_modulos
-  (ejercicio_id, nombre, tipo_medicion, direccion_ranking, unidad, orden, etapas)
+  (ejercicio_id, nombre, tipo_medicion, direccion_ranking, unidad, orden, etapas, tiempo_limite_segundos)
 select
   id,
   'Completado',
@@ -68,5 +68,34 @@ select
     {"nombre": "Estocadas",  "objetivo": 150},
     {"nombre": "Flexiones",  "objetivo": 100},
     {"nombre": "Burpees",    "objetivo": 50}
-  ]'::jsonb
+  ]'::jsonb,
+  1800
+from ejercicio;
+
+-- Mini test: escalera de 550 reps en 7 etapas, tiempo límite 20 min.
+with ejercicio as (
+  insert into public.ejercicios (nombre, descripcion)
+  values ('Mini test', 'Test de resistencia: escalera de 550 repeticiones en 7 etapas (20 minutos).')
+  on conflict (nombre) do nothing
+  returning id
+)
+insert into public.ejercicio_modulos
+  (ejercicio_id, nombre, tipo_medicion, direccion_ranking, unidad, orden, etapas, tiempo_limite_segundos)
+select
+  id,
+  'Completado',
+  'cantidad'::public.tipo_medicion,
+  'desc'::public.direccion_ranking,
+  'reps',
+  1,
+  '[
+    {"nombre": "Burpees",     "objetivo": 50},
+    {"nombre": "Flexiones",   "objetivo": 50},
+    {"nombre": "Sentadillas", "objetivo": 100},
+    {"nombre": "Estocadas",   "objetivo": 150},
+    {"nombre": "Sentadillas", "objetivo": 100},
+    {"nombre": "Flexiones",   "objetivo": 50},
+    {"nombre": "Burpees",     "objetivo": 50}
+  ]'::jsonb,
+  1200
 from ejercicio;

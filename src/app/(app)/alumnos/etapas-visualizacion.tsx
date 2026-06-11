@@ -10,10 +10,12 @@ export function EtapasVisualizacion({
   valor,
   etapas,
   tiempo_segundos,
+  tiempo_limite_segundos,
 }: {
   valor: number;
   etapas: Etapa[];
   tiempo_segundos?: number | null;
+  tiempo_limite_segundos?: number | null;
 }) {
   const objetivoTotal = etapas.reduce((s, e) => s + e.objetivo, 0);
   const completadoTodo = valor >= objetivoTotal;
@@ -38,8 +40,8 @@ export function EtapasVisualizacion({
   const repsEnEtapaActual = completadoTodo ? 0 : Math.max(0, valor - repsAcumuladas);
   const porcentaje = objetivoTotal > 0 ? Math.round((valor / objetivoTotal) * 100) : 0;
 
-  // Tiempo a mostrar: el registrado, o 30 min para incompletos sin dato
-  const tiempoMostrado = tiempo_segundos ?? (!completadoTodo ? 1800 : null);
+  // Tiempo a mostrar: el registrado, o el límite del módulo para incompletos sin dato
+  const tiempoMostrado = tiempo_segundos ?? (!completadoTodo ? (tiempo_limite_segundos ?? null) : null);
 
   return (
     <div className="flex flex-col gap-3">

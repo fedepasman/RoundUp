@@ -45,6 +45,7 @@ export type ValorMedido = {
   unidad: string | null;
   orden: number;
   etapas: Etapa[] | null;
+  tiempo_limite_segundos: number | null;
   valor: number;
   tiempo_segundos: number | null;
 };
@@ -258,7 +259,7 @@ export function EvolucionAlumno({
 
                 {/* Desglose de etapas para módulos con etapas */}
                 {modulo.etapas && actual && (
-                  <EtapasVisualizacion valor={actual.valor} etapas={modulo.etapas} tiempo_segundos={actual.tiempo_segundos} />
+                  <EtapasVisualizacion valor={actual.valor} etapas={modulo.etapas} tiempo_segundos={actual.tiempo_segundos} tiempo_limite_segundos={modulo.tiempo_limite_segundos} />
                 )}
 
                 {serie.length >= 2 && (

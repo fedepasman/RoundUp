@@ -33,7 +33,7 @@ export default async function PaginaEditarMedicion({
   const { data: medicion } = await supabase
     .from("mediciones")
     .select(
-      "id, fecha, alumno_id, ejercicio_id, alumnos (nombre, apellido), ejercicios (nombre), medicion_valores (id, valor, tiempo_segundos, modulo_id, ejercicio_modulos (id, nombre, tipo_medicion, unidad, orden, etapas))",
+      "id, fecha, alumno_id, ejercicio_id, alumnos (nombre, apellido), ejercicios (nombre), medicion_valores (id, valor, tiempo_segundos, modulo_id, ejercicio_modulos (id, nombre, tipo_medicion, unidad, orden, etapas, tiempo_limite_segundos))",
     )
     .eq("id", id)
     .single();
@@ -51,6 +51,7 @@ export default async function PaginaEditarMedicion({
       unidad: string | null;
       orden: number;
       etapas: { nombre: string; objetivo: number }[] | null;
+      tiempo_limite_segundos: number | null;
     };
     return {
       modulo_id: mv.modulo_id,
@@ -59,6 +60,7 @@ export default async function PaginaEditarMedicion({
       unidad: mod.unidad,
       orden: mod.orden,
       etapas: mod.etapas,
+      tiempo_limite_segundos: mod.tiempo_limite_segundos ?? null,
       valor: Number(mv.valor),
       tiempo_segundos: mv.tiempo_segundos ? Number(mv.tiempo_segundos) : null,
     };

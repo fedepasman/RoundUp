@@ -20,6 +20,7 @@ type ValorEditable = {
   unidad: string | null;
   orden: number;
   etapas: Etapa[] | null;
+  tiempo_limite_segundos: number | null;
   valor: number;
   tiempo_segundos: number | null;
 };
@@ -110,7 +111,7 @@ export function FormularioEdicion({
                 />
                 <p className="text-xs text-muted-foreground">
                   {objetivo !== null
-                    ? `Objetivo: ${objetivo} reps. Si no completó, se asigna 30:00 automáticamente.`
+                    ? `Objetivo: ${objetivo} reps. Si no completó, se asigna ${formatearSegundos(v.tiempo_limite_segundos ?? 1800)} automáticamente.`
                     : ""}
                 </p>
               </div>

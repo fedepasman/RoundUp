@@ -48,7 +48,7 @@ export async function guardarMedicion(
   // Los módulos válidos salen de la DB con sus etapas.
   const { data: modulos } = await supabase
     .from("ejercicio_modulos")
-    .select("id, nombre, tipo_medicion, etapas")
+    .select("id, nombre, tipo_medicion, etapas, tiempo_limite_segundos")
     .eq("ejercicio_id", ejercicio_id);
   if (!modulos?.length) {
     return { ok: false, error: "El ejercicio no tiene módulos configurados." };
@@ -90,8 +90,8 @@ export async function guardarMedicion(
         }
         tiempo_segundos = tiempoSeg;
       } else {
-        // No completó: asignar 30 minutos automáticamente
-        tiempo_segundos = 1800;
+        // No completó: asignar el tiempo límite del módulo automáticamente
+        tiempo_segundos = (modulo as { tiempo_limite_segundos?: number | null }).tiempo_limite_segundos ?? 1800;
       }
     }
 
