@@ -238,7 +238,7 @@ export function EvolucionAlumno({
 
                 {/* Desglose de etapas para módulos con etapas */}
                 {modulo.etapas && actual && (
-                  <EtapasVisualizacion valor={actual.valor} etapas={modulo.etapas} />
+                  <EtapasVisualizacion valor={actual.valor} etapas={modulo.etapas} tiempo_segundos={actual.tiempo_segundos} />
                 )}
 
                 {serie.length >= 2 && (

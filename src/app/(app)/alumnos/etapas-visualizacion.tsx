@@ -1,20 +1,19 @@
 "use client";
 
-import { Check } from "lucide-react";
+import { Check, Timer } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { formatearSegundos } from "@/lib/tiempo";
 import type { Etapa } from "@/types/ejercicios";
 
-/**
- * Visualización del progreso en un test por etapas: muestra cuáles etapas
- * se completaron (checks) y dónde se frenó, basado en el valor registrado.
- */
 export function EtapasVisualizacion({
   valor,
   etapas,
+  tiempo_segundos,
 }: {
   valor: number;
   etapas: Etapa[];
+  tiempo_segundos?: number | null;
 }) {
   const objetivoTotal = etapas.reduce((s, e) => s + e.objetivo, 0);
   const completadoTodo = valor >= objetivoTotal;
@@ -37,9 +36,10 @@ export function EtapasVisualizacion({
   }
 
   const repsEnEtapaActual = completadoTodo ? 0 : Math.max(0, valor - repsAcumuladas);
+  const porcentaje = objetivoTotal > 0 ? Math.round((valor / objetivoTotal) * 100) : 0;
 
-  const porcentaje =
-    objetivoTotal > 0 ? Math.round((valor / objetivoTotal) * 100) : 0;
+  // Tiempo a mostrar: el registrado, o 30 min para incompletos sin dato
+  const tiempoMostrado = tiempo_segundos ?? (!completadoTodo ? 1800 : null);
 
   return (
     <div className="flex flex-col gap-3">
@@ -110,6 +110,18 @@ export function EtapasVisualizacion({
           />
         </div>
       </div>
+
+      {tiempoMostrado !== null && (
+        <div className="flex items-center justify-between rounded-lg border bg-accent px-3 py-2">
+          <div className="flex items-center gap-2 text-sm font-semibold">
+            <Timer className="size-4" />
+            Tiempo
+          </div>
+          <span className="numeros-marca text-lg font-bold">
+            {formatearSegundos(tiempoMostrado)}
+          </span>
+        </div>
+      )}
     </div>
   );
 }
