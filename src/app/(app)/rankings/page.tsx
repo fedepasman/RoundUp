@@ -39,11 +39,18 @@ export default async function PaginaRankings({
 
   const ejercicio =
     ejercicios.find((e) => e.id === params.ejercicio) ?? ejercicios[0];
-  const esTotal = params.modulo === "__total__";
+
+  // Si no viene módulo especificado y hay más de uno, mostrar total por defecto
+  const moduloDefault = params.modulo
+    ? params.modulo
+    : ejercicio.ejercicio_modulos.length > 1
+      ? "__total__"
+      : ejercicio.ejercicio_modulos[0]?.id ?? "";
+
+  const esTotal = moduloDefault === "__total__";
   const modulo = esTotal
     ? null
-    : (ejercicio.ejercicio_modulos.find((m) => m.id === params.modulo) ??
-      ejercicio.ejercicio_modulos[0]);
+    : ejercicio.ejercicio_modulos.find((m) => m.id === moduloDefault) ?? null;
 
   const ranking = esTotal
     ? await obtenerRankingTotal(supabase, ejercicio.id)
