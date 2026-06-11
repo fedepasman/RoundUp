@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { obtenerEjerciciosConModulos } from "@/lib/consultas/ejercicios";
 import { obtenerFechasDisponibles, obtenerReporte } from "@/lib/consultas/reportes";
-import { formatearValor } from "@/lib/evolucion";
+import { formatearValor, formatearValorConTiempo } from "@/lib/evolucion";
 import { formatearEtapas } from "@/lib/etapas";
 import { fechaLocalISO, formatearFecha } from "@/lib/fechas";
 import { createClient } from "@/lib/supabase/server";
@@ -158,6 +158,7 @@ export default async function PaginaReportes({
                     </td>
                     {modulos.map((m) => {
                       const valor = fila.valores[m.id];
+                      const tiempo = fila.tiempos[m.id];
                       return (
                         <td
                           key={m.id}
@@ -167,7 +168,9 @@ export default async function PaginaReportes({
                             ? "—"
                             : m.etapas
                               ? formatearEtapas(valor, m.etapas)
-                              : formatearValor(valor, m.tipo_medicion)}
+                              : tiempo !== null && tiempo !== undefined
+                                ? formatearValorConTiempo(valor, m.tipo_medicion, tiempo)
+                                : formatearValor(valor, m.tipo_medicion)}
                         </td>
                       );
                     })}

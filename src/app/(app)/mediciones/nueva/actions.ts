@@ -45,20 +45,20 @@ export async function guardarMedicion(
   } = await supabase.auth.getUser();
   if (!user) return { ok: false, error: "Sesión expirada. Volvé a entrar." };
 
-  // Los módulos válidos salen de la DB, nunca del formulario.
+  // Los módulos válidos salen de la DB con sus etapas.
   const { data: modulos } = await supabase
     .from("ejercicio_modulos")
-    .select("id, nombre, tipo_medicion")
+    .select("id, nombre, tipo_medicion, etapas")
     .eq("ejercicio_id", ejercicio_id);
   if (!modulos?.length) {
     return { ok: false, error: "El ejercicio no tiene módulos configurados." };
   }
 
-  const valores: { modulo_id: string; valor: number }[] = [];
+  const valores: { modulo_id: string; valor: number; tiempo_segundos: number | null }[] = [];
   for (const modulo of modulos) {
     const crudo = String(formData.get(`valor_${modulo.id}`) ?? "").trim();
     if (!crudo) {
-      return { ok: false, error: `Falta el valor de “${modulo.nombre}”.` };
+      return { ok: false, error: `Falta el valor de "${modulo.nombre}".` };
     }
     const valor =
       modulo.tipo_medicion === "tiempo" ? aSegundos(crudo) : Number(crudo);
@@ -67,11 +67,35 @@ export async function guardarMedicion(
         ok: false,
         error:
           modulo.tipo_medicion === "tiempo"
-            ? `“${modulo.nombre}”: usá el formato mm:ss (ej. 1:35).`
-            : `“${modulo.nombre}”: ingresá un número válido.`,
+            ? `"${modulo.nombre}": usá el formato mm:ss (ej. 1:35).`
+            : `"${modulo.nombre}": ingresá un número válido.`,
       };
     }
-    valores.push({ modulo_id: modulo.id, valor });
+
+    // Manejar tiempo_segundos: si tiene etapas, procesar el tiempo
+    let tiempo_segundos: number | null = null;
+    if (modulo.etapas && Array.isArray(modulo.etapas)) {
+      const etapas = modulo.etapas as { nombre: string; objetivo: number }[];
+      const objetivoTotal = etapas.reduce((s, e) => s + e.objetivo, 0);
+
+      const tiempoString = String(formData.get(`tiempo_${modulo.id}`) ?? "").trim();
+      if (valor === objetivoTotal) {
+        // Completó: debe haber ingresado tiempo
+        if (!tiempoString) {
+          return { ok: false, error: `Ingresá el tiempo de "${modulo.nombre}".` };
+        }
+        const tiempoSeg = aSegundos(tiempoString);
+        if (tiempoSeg === null || tiempoSeg <= 0) {
+          return { ok: false, error: `Tiempo inválido en "${modulo.nombre}".` };
+        }
+        tiempo_segundos = tiempoSeg;
+      } else {
+        // No completó: asignar 30 minutos automáticamente
+        tiempo_segundos = 1800;
+      }
+    }
+
+    valores.push({ modulo_id: modulo.id, valor, tiempo_segundos });
   }
 
   // Un solo registro por alumno + ejercicio + fecha.

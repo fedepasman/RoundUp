@@ -23,3 +23,14 @@ export function formatearValor(valor: number, tipo: TipoMedicion): string {
   if (tipo === "tiempo") return formatearSegundos(valor);
   return Number.isInteger(valor) ? String(valor) : valor.toFixed(2);
 }
+
+/** Valor + tiempo para módulos con cronometraje (Testeo). */
+export function formatearValorConTiempo(
+  valor: number,
+  tipo: TipoMedicion,
+  tiempo_segundos: number | null,
+): string {
+  const valor_str = formatearValor(valor, tipo);
+  if (!tiempo_segundos) return valor_str;
+  return `${valor_str} · ${formatearSegundos(tiempo_segundos)}`;
+}

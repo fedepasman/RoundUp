@@ -25,7 +25,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { EtapasVisualizacion } from "@/app/(app)/alumnos/etapas-visualizacion";
-import { calcularMejora, formatearValor } from "@/lib/evolucion";
+import { calcularMejora, formatearValor, formatearValorConTiempo } from "@/lib/evolucion";
 import { formatearEtapas } from "@/lib/etapas";
 import { formatearFecha } from "@/lib/fechas";
 import { cn } from "@/lib/utils";
@@ -44,6 +44,7 @@ export type ValorMedido = {
   orden: number;
   etapas: Etapa[] | null;
   valor: number;
+  tiempo_segundos: number | null;
 };
 
 export type MedicionHistorial = {
@@ -162,7 +163,7 @@ export function EvolucionAlumno({
                 (x) => x.modulo_id === modulo.modulo_id,
               );
               return v
-                ? { fecha: m.fecha, valor: v.valor, tipo: v.tipo_medicion }
+                ? { fecha: m.fecha, valor: v.valor, tipo: v.tipo_medicion, tiempo_segundos: v.tiempo_segundos }
                 : null;
             })
             .filter((p) => p !== null);
@@ -204,7 +205,13 @@ export function EvolucionAlumno({
                       {actual
                         ? modulo.etapas
                           ? formatearEtapas(actual.valor, modulo.etapas)
-                          : formatearValor(actual.valor, modulo.tipo_medicion)
+                          : actual.tiempo_segundos
+                            ? formatearValorConTiempo(
+                                actual.valor,
+                                modulo.tipo_medicion,
+                                actual.tiempo_segundos,
+                              )
+                            : formatearValor(actual.valor, modulo.tipo_medicion)
                         : "—"}
                     </p>
                     {mejora !== null && (
@@ -405,7 +412,13 @@ export function EvolucionAlumno({
                     const partes = sorted.map((v) =>
                       v.etapas
                         ? formatearEtapas(v.valor, v.etapas)
-                        : formatearValor(v.valor, v.tipo_medicion),
+                        : v.tiempo_segundos
+                          ? formatearValorConTiempo(
+                              v.valor,
+                              v.tipo_medicion,
+                              v.tiempo_segundos,
+                            )
+                          : formatearValor(v.valor, v.tipo_medicion),
                     );
                     if (sorted.length <= 1) return partes.join(" · ");
                     const total = sorted.reduce((s, v) => s + v.valor, 0);

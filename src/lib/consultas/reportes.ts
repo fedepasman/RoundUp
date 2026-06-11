@@ -6,6 +6,8 @@ export type FilaReporte = {
   apellido: string;
   /** valor por modulo_id */
   valores: Record<string, number>;
+  /** tiempo en segundos por modulo_id (puede ser null) */
+  tiempos: Record<string, number | null>;
   /** suma de todos los módulos de la medición */
   total: number;
 };
@@ -17,7 +19,7 @@ type MedicionCruda = {
     apellido: string;
     activo: boolean;
   };
-  medicion_valores: { valor: number; modulo_id: string }[];
+  medicion_valores: { valor: number; tiempo_segundos: number | null; modulo_id: string }[];
 };
 
 /**
@@ -56,7 +58,7 @@ export async function obtenerReporte(
   const { data, error } = await supabase
     .from("mediciones")
     .select(
-      "id, alumnos!inner (id, nombre, apellido, activo), medicion_valores (valor, modulo_id)",
+      "id, alumnos!inner (id, nombre, apellido, activo), medicion_valores (valor, tiempo_segundos, modulo_id)",
     )
     .eq("ejercicio_id", ejercicioId)
     .eq("fecha", fecha)
@@ -66,10 +68,12 @@ export async function obtenerReporte(
 
   return ((data ?? []) as unknown as MedicionCruda[]).map((m) => {
     const valores: Record<string, number> = {};
+    const tiempos: Record<string, number | null> = {};
     let total = 0;
     for (const v of m.medicion_valores ?? []) {
       const valor = Number(v.valor);
       valores[v.modulo_id] = valor;
+      tiempos[v.modulo_id] = v.tiempo_segundos ? Number(v.tiempo_segundos) : null;
       total += valor;
     }
     return {
@@ -77,6 +81,7 @@ export async function obtenerReporte(
       nombre: m.alumnos.nombre,
       apellido: m.alumnos.apellido,
       valores,
+      tiempos,
       total,
     };
   });

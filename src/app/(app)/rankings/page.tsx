@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { obtenerEjerciciosConModulos } from "@/lib/consultas/ejercicios";
 import { obtenerRanking, obtenerRankingTotal } from "@/lib/consultas/rankings";
-import { formatearValor } from "@/lib/evolucion";
+import { formatearValor, formatearValorConTiempo } from "@/lib/evolucion";
 import { formatearEtapas } from "@/lib/etapas";
 import { formatearFecha } from "@/lib/fechas";
 import { createClient } from "@/lib/supabase/server";
@@ -116,8 +116,10 @@ export default async function PaginaRankings({
                         ? puesto.mejorValor
                         : modulo?.etapas
                           ? formatearEtapas(puesto.mejorValor, modulo.etapas)
-                          : modulo &&
-                            formatearValor(puesto.mejorValor, modulo.tipo_medicion)}
+                          : modulo && puesto.tiempo_segundos
+                            ? formatearValorConTiempo(puesto.mejorValor, modulo.tipo_medicion, puesto.tiempo_segundos)
+                            : modulo &&
+                              formatearValor(puesto.mejorValor, modulo.tipo_medicion)}
                       {!esTotal && !modulo?.etapas && modulo?.unidad && (
                         <span className="ml-1 text-xs font-normal text-muted-foreground">
                           {modulo.unidad}

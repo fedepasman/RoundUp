@@ -49,7 +49,7 @@ export default async function PaginaFichaAlumno({
       supabase
         .from("mediciones")
         .select(
-          "id, fecha, ejercicio_id, ejercicios (nombre), medicion_valores (valor, ejercicio_modulos (id, nombre, tipo_medicion, direccion_ranking, unidad, orden, etapas))",
+          "id, fecha, ejercicio_id, ejercicios (nombre), medicion_valores (valor, tiempo_segundos, ejercicio_modulos (id, nombre, tipo_medicion, direccion_ranking, unidad, orden, etapas))",
         )
         .eq("alumno_id", id)
         .order("fecha", { ascending: false }),
@@ -81,6 +81,7 @@ export default async function PaginaFichaAlumno({
           orden: mod.orden,
           etapas: mod.etapas,
           valor: Number(v.valor),
+          tiempo_segundos: v.tiempo_segundos ? Number(v.tiempo_segundos) : null,
         };
       }),
     }),
