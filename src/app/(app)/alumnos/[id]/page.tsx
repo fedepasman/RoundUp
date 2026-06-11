@@ -145,7 +145,7 @@ export default async function PaginaFichaAlumno({
     <div className="flex flex-col gap-4">
       <div className="flex items-start justify-between gap-2">
         <div>
-          <h1 className="font-display text-4xl uppercase">
+          <h1 className="font-display text-3xl uppercase">
             {alumno.nombre} {alumno.apellido}
           </h1>
           <p className="text-muted-foreground">
@@ -198,7 +198,7 @@ export default async function PaginaFichaAlumno({
                   <span className="text-base text-muted-foreground">
                     Presentismo (últimas {totalAsistencias})
                   </span>
-                  <span className="numeros-marca text-4xl">
+                  <span className="numeros-marca text-3xl">
                     {porcentajePresente}%
                   </span>
                 </CardContent>

@@ -80,7 +80,7 @@ export function PlanillaAsistencia({
         <Card>
           <CardContent className="flex items-baseline justify-between p-4">
             <span className="text-base text-muted-foreground">Presentes</span>
-            <span className="numeros-marca text-3xl text-success">
+            <span className="numeros-marca text-2xl text-success">
               {presentes}
             </span>
           </CardContent>
@@ -88,7 +88,7 @@ export function PlanillaAsistencia({
         <Card>
           <CardContent className="flex items-baseline justify-between p-4">
             <span className="text-base text-muted-foreground">Ausentes</span>
-            <span className="numeros-marca text-3xl text-destructive">
+            <span className="numeros-marca text-2xl text-destructive">
               {ausentes}
             </span>
           </CardContent>

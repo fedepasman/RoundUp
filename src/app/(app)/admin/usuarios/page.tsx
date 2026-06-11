@@ -30,7 +30,7 @@ export default async function PaginaUsuarios() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="font-display text-4xl uppercase">Usuarios</h1>
+        <h1 className="font-display text-3xl uppercase">Usuarios</h1>
         <p className="text-base text-muted-foreground">
           Creá cuentas para profesores y admins.
         </p>

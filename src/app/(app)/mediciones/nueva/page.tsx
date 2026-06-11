@@ -22,7 +22,7 @@ export default async function PaginaNuevaMedicion() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="font-display text-4xl uppercase">Cargar medición</h1>
+      <h1 className="font-display text-3xl uppercase">Cargar medición</h1>
       <FormularioMedicion ejercicios={ejercicios} alumnos={alumnos ?? []} />
     </div>
   );

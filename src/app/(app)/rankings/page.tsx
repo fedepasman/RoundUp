@@ -26,7 +26,7 @@ export default async function PaginaRankings({
   if (!ejercicios.length) {
     return (
       <div className="flex flex-col gap-4">
-        <h1 className="font-display text-4xl uppercase">Rankings</h1>
+        <h1 className="font-display text-3xl uppercase">Rankings</h1>
         <Card>
           <CardContent className="p-4 text-base text-muted-foreground">
             No hay ejercicios cargados todavía.
@@ -52,7 +52,7 @@ export default async function PaginaRankings({
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="font-display text-4xl uppercase">Rankings</h1>
+      <h1 className="font-display text-3xl uppercase">Rankings</h1>
 
       <SelectorRanking
         ejercicios={ejercicios}
@@ -111,7 +111,7 @@ export default async function PaginaRankings({
                         {formatearFecha(puesto.fecha)}
                       </p>
                     </div>
-                    <span className="numeros-marca shrink-0 text-3xl">
+                    <span className="numeros-marca shrink-0 text-2xl">
                       {esTotal
                         ? puesto.mejorValor
                         : modulo?.etapas

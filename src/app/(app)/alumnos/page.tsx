@@ -37,7 +37,7 @@ export default async function PaginaAlumnos({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <h1 className="font-display text-4xl uppercase">Alumnos</h1>
+        <h1 className="font-display text-3xl uppercase">Alumnos</h1>
         <Button asChild className="h-11">
           <Link href="/alumnos/nuevo">
             <UserPlus className="size-4" />

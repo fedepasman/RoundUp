@@ -87,7 +87,7 @@ export default async function PaginaInicio() {
             <span className="text-base text-muted-foreground">
               Alumnos totales
             </span>
-            <span className="numeros-marca text-4xl">{totalAlumnos ?? 0}</span>
+            <span className="numeros-marca text-3xl">{totalAlumnos ?? 0}</span>
           </CardContent>
         </Card>
         {!!ultimosAlumnos?.length && (

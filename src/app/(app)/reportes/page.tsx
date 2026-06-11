@@ -27,7 +27,7 @@ export default async function PaginaReportes({
   if (!ejercicios.length) {
     return (
       <div className="flex flex-col gap-4">
-        <h1 className="font-display text-4xl uppercase">Reportes</h1>
+        <h1 className="font-display text-3xl uppercase">Reportes</h1>
         <Card>
           <CardContent className="p-4 text-base text-muted-foreground">
             No hay ejercicios cargados todavía.
@@ -64,7 +64,7 @@ export default async function PaginaReportes({
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="font-display text-4xl uppercase">Reportes</h1>
+      <h1 className="font-display text-3xl uppercase">Reportes</h1>
 
       <div className="flex flex-col gap-3">
         <SelectorReporte

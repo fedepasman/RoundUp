@@ -223,7 +223,7 @@ export function EvolucionAlumno({
                       )}
                   </div>
                   <div className="text-right">
-                    <p className="numeros-marca text-3xl">
+                    <p className="numeros-marca text-2xl">
                       {actual
                         ? modulo.etapas
                           ? actual.tiempo_segundos
@@ -343,7 +343,7 @@ export function EvolucionAlumno({
                   )}
                 </div>
                 <div className="text-right">
-                  <p className="numeros-marca text-3xl">
+                  <p className="numeros-marca text-2xl">
                     {actual ? formatearValor(actual.valor, tipoTotal) : "—"}
                   </p>
                   {mejora !== null && (
