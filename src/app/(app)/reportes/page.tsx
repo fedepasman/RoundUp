@@ -27,9 +27,9 @@ export default async function PaginaReportes({
   if (!ejercicios.length) {
     return (
       <div className="flex flex-col gap-4">
-        <h1 className="font-display text-3xl uppercase">Reportes</h1>
+        <h1 className="font-display text-4xl uppercase">Reportes</h1>
         <Card>
-          <CardContent className="p-4 text-sm text-muted-foreground">
+          <CardContent className="p-4 text-base text-muted-foreground">
             No hay ejercicios cargados todavía.
           </CardContent>
         </Card>
@@ -64,7 +64,7 @@ export default async function PaginaReportes({
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="font-display text-3xl uppercase">Reportes</h1>
+      <h1 className="font-display text-4xl uppercase">Reportes</h1>
 
       <div className="flex flex-col gap-3">
         <SelectorReporte
@@ -108,7 +108,7 @@ export default async function PaginaReportes({
         )}
       </div>
 
-      <p className="text-xs text-muted-foreground">
+      <p className="text-sm text-muted-foreground">
         {filas.length === 0
           ? `Sin mediciones el ${formatearFecha(fecha)}.`
           : `${filas.length} ${filas.length === 1 ? "alumno" : "alumnos"} el ${formatearFecha(fecha)}.`}
@@ -116,7 +116,7 @@ export default async function PaginaReportes({
 
       {filas.length === 0 ? (
         <Card>
-          <CardContent className="p-4 text-sm text-muted-foreground">
+          <CardContent className="p-4 text-base text-muted-foreground">
             Nadie tiene una medición de {ejercicio.nombre} para esta fecha.
             Probá con otra fecha u otro ejercicio.
           </CardContent>
@@ -124,7 +124,7 @@ export default async function PaginaReportes({
       ) : (
         <Card className="overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse text-sm">
+            <table className="w-full border-collapse text-base">
               <thead>
                 <tr className="border-b">
                   <th className="sticky left-0 bg-card px-3 py-3 text-left font-semibold">

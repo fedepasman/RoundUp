@@ -30,7 +30,7 @@ export default async function AppLayout({
     <div className="flex min-h-dvh flex-1 flex-col pb-16">
       <header className="sticky top-0 z-40 border-b bg-card pt-[env(safe-area-inset-top)]">
         <div className="mx-auto flex h-14 max-w-lg items-center justify-between px-4">
-          <Link href="/" className="font-display text-xl uppercase">
+          <Link href="/" className="font-display text-2xl uppercase">
             RoundUp
           </Link>
           <div className="flex items-center gap-1">

@@ -40,11 +40,11 @@ export function FormularioLogin() {
         />
       </div>
       {estado?.error && (
-        <p role="alert" className="text-sm font-medium text-destructive">
+        <p role="alert" className="text-base font-medium text-destructive">
           {estado.error}
         </p>
       )}
-      <Button type="submit" disabled={pendiente} className="h-12 text-base">
+      <Button type="submit" disabled={pendiente} className="h-12 text-lg">
         {pendiente ? "Entrando…" : "Iniciar sesión"}
       </Button>
     </form>

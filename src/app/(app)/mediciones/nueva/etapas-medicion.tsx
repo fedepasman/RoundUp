@@ -83,7 +83,7 @@ export function EtapasMedicion({
                 <Check className="size-5" />
               </button>
 
-              <span className="flex-1 text-sm font-medium">
+              <span className="flex-1 text-base font-medium">
                 {i + 1}. {etapa.nombre}
               </span>
 
@@ -105,12 +105,12 @@ export function EtapasMedicion({
                     }}
                     className="numeros-marca h-10 w-16 text-right"
                   />
-                  <span className="numeros-marca text-sm text-muted-foreground">
+                  <span className="numeros-marca text-base text-muted-foreground">
                     /{etapa.objetivo}
                   </span>
                 </div>
               ) : (
-                <span className="numeros-marca text-sm text-muted-foreground">
+                <span className="numeros-marca text-base text-muted-foreground">
                   {marcada ? etapa.objetivo : 0}/{etapa.objetivo}
                 </span>
               )}
@@ -121,8 +121,8 @@ export function EtapasMedicion({
 
       <div className="flex flex-col gap-1">
         <div className="flex items-baseline justify-between">
-          <span className="text-sm font-semibold">Progreso</span>
-          <span className="numeros-marca text-sm">
+          <span className="text-base font-semibold">Progreso</span>
+          <span className="numeros-marca text-base">
             {total}/{objetivoTotal} · {porcentaje}%
           </span>
         </div>

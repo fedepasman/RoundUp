@@ -73,17 +73,17 @@ export function FormularioCrearUsuario() {
           </div>
 
           {estado && !estado.ok && (
-            <p role="alert" className="text-sm font-medium text-destructive">
+            <p role="alert" className="text-base font-medium text-destructive">
               {estado.error}
             </p>
           )}
           {estado?.ok && (
-            <p role="status" className="text-sm font-medium text-success">
+            <p role="status" className="text-base font-medium text-success">
               {estado.mensaje}
             </p>
           )}
 
-          <Button type="submit" disabled={pendiente} className="h-12 text-base">
+          <Button type="submit" disabled={pendiente} className="h-12 text-lg">
             {pendiente ? "Creando…" : "Crear usuario"}
           </Button>
         </form>

@@ -91,7 +91,7 @@ export function EvolucionAlumno({
   if (!mediciones.length) {
     return (
       <Card>
-        <CardContent className="p-4 text-sm text-muted-foreground">
+        <CardContent className="p-4 text-base text-muted-foreground">
           Todavía no hay mediciones registradas. Cargá la primera desde
           “Cargar medición”.
         </CardContent>
@@ -142,10 +142,10 @@ export function EvolucionAlumno({
             Anterior
           </Button>
           <div className="flex flex-1 flex-col items-center justify-center gap-0.5 text-center">
-            <span className="text-xs font-semibold">
+            <span className="text-sm font-semibold">
               {formatearFecha(delEjercicio[indiceValido]?.fecha ?? "")}
             </span>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-sm text-muted-foreground">
               {indiceValido + 1} de {delEjercicio.length}
             </span>
           </div>
@@ -206,24 +206,24 @@ export function EvolucionAlumno({
               <CardContent className="flex flex-col gap-3 p-4">
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <p className="text-sm font-semibold">
+                    <p className="text-base font-semibold">
                       {modulo.modulo_nombre}
                     </p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-sm text-muted-foreground">
                       {serie.length}{" "}
                       {serie.length === 1 ? "medición" : "mediciones"}
                       {modulo.unidad ? ` · ${modulo.unidad}` : ""}
                     </p>
                     {posiciones[modulo.modulo_id] &&
                       posiciones[modulo.modulo_id].total > 1 && (
-                        <p className="pt-1 text-xs font-semibold text-primary">
+                        <p className="pt-1 text-sm font-semibold text-primary">
                           #{posiciones[modulo.modulo_id].posicion} de{" "}
                           {posiciones[modulo.modulo_id].total} en el ranking
                         </p>
                       )}
                   </div>
                   <div className="text-right">
-                    <p className="numeros-marca text-2xl">
+                    <p className="numeros-marca text-3xl">
                       {actual
                         ? modulo.etapas
                           ? actual.tiempo_segundos
@@ -241,7 +241,7 @@ export function EvolucionAlumno({
                     {mejora !== null && (
                       <p
                         className={cn(
-                          "flex items-center justify-end gap-1 text-xs font-semibold",
+                          "flex items-center justify-end gap-1 text-sm font-semibold",
                           mejora >= 0 ? "text-success" : "text-destructive",
                         )}
                       >
@@ -330,26 +330,26 @@ export function EvolucionAlumno({
             <CardContent className="flex flex-col gap-3 p-4">
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <p className="text-sm font-semibold">Total general</p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-base font-semibold">Total general</p>
+                  <p className="text-sm text-muted-foreground">
                     {serieTotales.length}{" "}
                     {serieTotales.length === 1 ? "medición" : "mediciones"}{" "}
                     · suma de {modulos.length} módulos
                   </p>
                   {posTotal && posTotal.total > 1 && (
-                    <p className="pt-1 text-xs font-semibold text-primary">
+                    <p className="pt-1 text-sm font-semibold text-primary">
                       #{posTotal.posicion} de {posTotal.total} en el ranking
                     </p>
                   )}
                 </div>
                 <div className="text-right">
-                  <p className="numeros-marca text-2xl">
+                  <p className="numeros-marca text-3xl">
                     {actual ? formatearValor(actual.valor, tipoTotal) : "—"}
                   </p>
                   {mejora !== null && (
                     <p
                       className={cn(
-                        "flex items-center justify-end gap-1 text-xs font-semibold",
+                        "flex items-center justify-end gap-1 text-sm font-semibold",
                         mejora >= 0 ? "text-success" : "text-destructive",
                       )}
                     >
@@ -416,14 +416,14 @@ export function EvolucionAlumno({
       {/* Historial completo del ejercicio */}
       <Card>
         <CardContent className="flex flex-col p-4">
-          <p className="pb-2 text-sm font-semibold">Historial</p>
+          <p className="pb-2 text-base font-semibold">Historial</p>
           {delEjercicio
             .slice()
             .reverse()
             .map((m) => (
               <div
                 key={m.id}
-                className="flex items-center justify-between gap-2 border-b py-2 text-sm last:border-b-0"
+                className="flex items-center justify-between gap-2 border-b py-2 text-base last:border-b-0"
               >
                 <span className="shrink-0 text-muted-foreground">
                   {formatearFecha(m.fecha)}

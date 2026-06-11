@@ -96,7 +96,7 @@ export function FormularioMedicion({
   if (!ejercicios.length) {
     return (
       <Card>
-        <CardContent className="p-4 text-sm text-muted-foreground">
+        <CardContent className="p-4 text-base text-muted-foreground">
           No hay ejercicios cargados todavía.
         </CardContent>
       </Card>
@@ -182,7 +182,7 @@ export function FormularioMedicion({
             </div>
             <ul className="max-h-56 overflow-y-auto rounded-lg border">
               {alumnosFiltrados.length === 0 && (
-                <li className="p-3 text-sm text-muted-foreground">
+                <li className="p-3 text-base text-muted-foreground">
                   No hay alumnos para esa búsqueda.
                 </li>
               )}
@@ -191,7 +191,7 @@ export function FormularioMedicion({
                   <button
                     type="button"
                     onClick={() => setAlumno(a)}
-                    className="w-full px-4 py-3 text-left text-sm font-medium hover:bg-muted"
+                    className="w-full px-4 py-3 text-left text-base font-medium hover:bg-muted"
                   >
                     {a.apellido}, {a.nombre}
                   </button>
@@ -229,7 +229,7 @@ export function FormularioMedicion({
                     id={`valor_${modulo.id}`}
                     name={`valor_${modulo.id}`}
                     required
-                    className="numeros-marca h-12 text-lg"
+                    className="numeros-marca h-12 text-xl"
                     onChange={(e) =>
                       setValoresLive((prev) => ({
                         ...prev,
@@ -277,13 +277,13 @@ export function FormularioMedicion({
               const tipo = modulos[0]?.tipo_medicion ?? "numero";
               return (
                 <div className="flex items-center justify-between border-t pt-3">
-                  <span className="text-sm font-semibold text-muted-foreground">
+                  <span className="text-base font-semibold text-muted-foreground">
                     Total
                   </span>
-                  <span className="numeros-marca text-xl font-bold">
+                  <span className="numeros-marca text-2xl font-bold">
                     {formatearValor(total, tipo)}
                     {modulos[0]?.unidad && (
-                      <span className="ml-1 text-xs font-normal text-muted-foreground">
+                      <span className="ml-1 text-sm font-normal text-muted-foreground">
                         {modulos[0].unidad}
                       </span>
                     )}
@@ -298,7 +298,7 @@ export function FormularioMedicion({
       {duplicado && (
         <Card className="border-primary">
           <CardContent className="flex flex-col gap-3 p-4">
-            <p className="text-sm font-medium">
+            <p className="text-base font-medium">
               Ya hay una medición de {ejercicio?.nombre} para este alumno en
               esta fecha. ¿Querés reemplazar los valores?
             </p>
@@ -326,13 +326,13 @@ export function FormularioMedicion({
       )}
 
       {error && (
-        <p role="alert" className="text-sm font-medium text-destructive">
+        <p role="alert" className="text-base font-medium text-destructive">
           {error}
         </p>
       )}
 
       {alumno && !duplicado && (
-        <Button type="submit" disabled={pendiente} className="h-12 text-base">
+        <Button type="submit" disabled={pendiente} className="h-12 text-lg">
           {pendiente ? "Guardando…" : "Guardar medición"}
         </Button>
       )}

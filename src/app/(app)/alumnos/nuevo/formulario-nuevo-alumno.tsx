@@ -17,11 +17,11 @@ export function FormularioNuevoAlumno() {
     <form action={accion} className="flex flex-col gap-4">
       <CamposAlumno />
       {estado?.error && (
-        <p role="alert" className="text-sm font-medium text-destructive">
+        <p role="alert" className="text-base font-medium text-destructive">
           {estado.error}
         </p>
       )}
-      <Button type="submit" disabled={pendiente} className="h-12 text-base">
+      <Button type="submit" disabled={pendiente} className="h-12 text-lg">
         {pendiente ? "Guardando…" : "Guardar alumno"}
       </Button>
     </form>

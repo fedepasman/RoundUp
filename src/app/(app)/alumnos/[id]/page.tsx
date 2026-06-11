@@ -145,7 +145,7 @@ export default async function PaginaFichaAlumno({
     <div className="flex flex-col gap-4">
       <div className="flex items-start justify-between gap-2">
         <div>
-          <h1 className="font-display text-3xl uppercase">
+          <h1 className="font-display text-4xl uppercase">
             {alumno.nombre} {alumno.apellido}
           </h1>
           <p className="text-muted-foreground">
@@ -170,7 +170,7 @@ export default async function PaginaFichaAlumno({
 
         <TabsContent value="datos">
           <Card>
-            <CardContent className="flex flex-col gap-3 p-4 text-sm">
+            <CardContent className="flex flex-col gap-3 p-4 text-base">
               <Dato etiqueta="Fecha de nacimiento">
                 {formatearFecha(alumno.fecha_nacimiento)}
               </Dato>
@@ -187,7 +187,7 @@ export default async function PaginaFichaAlumno({
         <TabsContent value="asistencia">
           {totalAsistencias === 0 ? (
             <Card>
-              <CardContent className="p-4 text-sm text-muted-foreground">
+              <CardContent className="p-4 text-base text-muted-foreground">
                 Todavía no hay asistencias registradas.
               </CardContent>
             </Card>
@@ -195,10 +195,10 @@ export default async function PaginaFichaAlumno({
             <div className="flex flex-col gap-2">
               <Card>
                 <CardContent className="flex items-baseline justify-between p-4">
-                  <span className="text-sm text-muted-foreground">
+                  <span className="text-base text-muted-foreground">
                     Presentismo (últimas {totalAsistencias})
                   </span>
-                  <span className="numeros-marca text-3xl">
+                  <span className="numeros-marca text-4xl">
                     {porcentajePresente}%
                   </span>
                 </CardContent>
@@ -208,7 +208,7 @@ export default async function PaginaFichaAlumno({
                   {asistencias!.map((a) => (
                     <div
                       key={a.fecha}
-                      className="flex items-center justify-between border-b py-2 text-sm last:border-b-0"
+                      className="flex items-center justify-between border-b py-2 text-base last:border-b-0"
                     >
                       <span>{formatearFecha(a.fecha)}</span>
                       <Badge

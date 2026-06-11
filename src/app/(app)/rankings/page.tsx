@@ -26,9 +26,9 @@ export default async function PaginaRankings({
   if (!ejercicios.length) {
     return (
       <div className="flex flex-col gap-4">
-        <h1 className="font-display text-3xl uppercase">Rankings</h1>
+        <h1 className="font-display text-4xl uppercase">Rankings</h1>
         <Card>
-          <CardContent className="p-4 text-sm text-muted-foreground">
+          <CardContent className="p-4 text-base text-muted-foreground">
             No hay ejercicios cargados todavía.
           </CardContent>
         </Card>
@@ -52,7 +52,7 @@ export default async function PaginaRankings({
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="font-display text-3xl uppercase">Rankings</h1>
+      <h1 className="font-display text-4xl uppercase">Rankings</h1>
 
       <SelectorRanking
         ejercicios={ejercicios}
@@ -61,11 +61,11 @@ export default async function PaginaRankings({
       />
 
       {esTotal ? (
-        <p className="text-xs text-muted-foreground">
+        <p className="text-sm text-muted-foreground">
           Suma de todos los módulos. Mayor total gana.
         </p>
       ) : modulo && (
-        <p className="text-xs text-muted-foreground">
+        <p className="text-sm text-muted-foreground">
           {modulo.direccion_ranking === "desc"
             ? "Gana la marca más alta."
             : "Gana la marca más baja."}
@@ -74,7 +74,7 @@ export default async function PaginaRankings({
 
       {!ranking.length ? (
         <Card>
-          <CardContent className="p-4 text-sm text-muted-foreground">
+          <CardContent className="p-4 text-base text-muted-foreground">
             Todavía no hay mediciones de este módulo. Las marcas aparecen acá
             apenas cargues la primera.
           </CardContent>
@@ -94,7 +94,7 @@ export default async function PaginaRankings({
                   <CardContent className="flex items-center gap-3 p-4">
                     <span
                       className={cn(
-                        "numeros-marca w-8 shrink-0 text-center text-xl font-bold",
+                        "numeros-marca w-8 shrink-0 text-center text-2xl font-bold",
                         indice === 0 && "text-yellow-600",
                         indice === 1 && "text-gray-500",
                         indice === 2 && "text-orange-700",
@@ -107,11 +107,11 @@ export default async function PaginaRankings({
                       <p className="truncate font-semibold">
                         {puesto.apellido}, {puesto.nombre}
                       </p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-sm text-muted-foreground">
                         {formatearFecha(puesto.fecha)}
                       </p>
                     </div>
-                    <span className="numeros-marca shrink-0 text-2xl">
+                    <span className="numeros-marca shrink-0 text-3xl">
                       {esTotal
                         ? puesto.mejorValor
                         : modulo?.etapas
@@ -121,7 +121,7 @@ export default async function PaginaRankings({
                             : modulo &&
                               formatearValor(puesto.mejorValor, modulo.tipo_medicion)}
                       {!esTotal && !modulo?.etapas && modulo?.unidad && (
-                        <span className="ml-1 text-xs font-normal text-muted-foreground">
+                        <span className="ml-1 text-sm font-normal text-muted-foreground">
                           {modulo.unidad}
                         </span>
                       )}

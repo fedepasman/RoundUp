@@ -9,9 +9,9 @@ export function Proximamente({
 }) {
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="font-display text-3xl uppercase">{titulo}</h1>
+      <h1 className="font-display text-4xl uppercase">{titulo}</h1>
       <Card>
-        <CardContent className="p-4 text-sm text-muted-foreground">
+        <CardContent className="p-4 text-base text-muted-foreground">
           Esta sección llega en la etapa {etapa}.
         </CardContent>
       </Card>

@@ -30,8 +30,8 @@ export default async function PaginaUsuarios() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="font-display text-3xl uppercase">Usuarios</h1>
-        <p className="text-sm text-muted-foreground">
+        <h1 className="font-display text-4xl uppercase">Usuarios</h1>
+        <p className="text-base text-muted-foreground">
           Creá cuentas para profesores y admins.
         </p>
       </div>
@@ -39,7 +39,7 @@ export default async function PaginaUsuarios() {
       <FormularioCrearUsuario />
 
       <section className="flex flex-col gap-2">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+        <h2 className="text-base font-semibold uppercase tracking-wide text-muted-foreground">
           Equipo ({usuarios?.length ?? 0})
         </h2>
         {usuarios?.map((u) => (

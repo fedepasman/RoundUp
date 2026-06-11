@@ -79,16 +79,16 @@ export function PlanillaAsistencia({
       <div className="grid grid-cols-2 gap-3">
         <Card>
           <CardContent className="flex items-baseline justify-between p-4">
-            <span className="text-sm text-muted-foreground">Presentes</span>
-            <span className="numeros-marca text-2xl text-success">
+            <span className="text-base text-muted-foreground">Presentes</span>
+            <span className="numeros-marca text-3xl text-success">
               {presentes}
             </span>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="flex items-baseline justify-between p-4">
-            <span className="text-sm text-muted-foreground">Ausentes</span>
-            <span className="numeros-marca text-2xl text-destructive">
+            <span className="text-base text-muted-foreground">Ausentes</span>
+            <span className="numeros-marca text-3xl text-destructive">
               {ausentes}
             </span>
           </CardContent>
@@ -97,7 +97,7 @@ export function PlanillaAsistencia({
 
       {!alumnos.length ? (
         <Card>
-          <CardContent className="p-4 text-sm text-muted-foreground">
+          <CardContent className="p-4 text-base text-muted-foreground">
             No hay alumnos activos para tomar asistencia.
           </CardContent>
         </Card>
@@ -151,7 +151,7 @@ export function PlanillaAsistencia({
       )}
 
       {error && (
-        <p role="alert" className="text-sm font-medium text-destructive">
+        <p role="alert" className="text-base font-medium text-destructive">
           {error}
         </p>
       )}
@@ -161,7 +161,7 @@ export function PlanillaAsistencia({
           type="button"
           onClick={guardar}
           disabled={pendiente || !hayCambios}
-          className="sticky bottom-20 h-12 text-base shadow-lg"
+          className="sticky bottom-20 h-12 text-lg shadow-lg"
         >
           {pendiente
             ? "Guardando…"

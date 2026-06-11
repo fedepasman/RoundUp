@@ -20,8 +20,8 @@ export function FormularioInscripcion() {
       <Card>
         <CardContent className="flex flex-col items-center gap-3 p-6 text-center">
           <PartyPopper className="size-10 text-primary" />
-          <p className="text-lg font-semibold">¡Listo, ya estás anotado!</p>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-xl font-semibold">¡Listo, ya estás anotado!</p>
+          <p className="text-base text-muted-foreground">
             Tu profe ya puede verte en la lista de alumnos. Nos vemos en el
             entrenamiento.
           </p>
@@ -43,11 +43,11 @@ export function FormularioInscripcion() {
         className="hidden"
       />
       {estado && !estado.ok && (
-        <p role="alert" className="text-sm font-medium text-destructive">
+        <p role="alert" className="text-base font-medium text-destructive">
           {estado.error}
         </p>
       )}
-      <Button type="submit" disabled={pendiente} className="h-12 text-base">
+      <Button type="submit" disabled={pendiente} className="h-12 text-lg">
         {pendiente ? "Enviando…" : "Inscribirme"}
       </Button>
     </form>

@@ -38,7 +38,7 @@ export default async function PaginaAsistencia({
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="font-display text-3xl uppercase">Asistencia</h1>
+      <h1 className="font-display text-4xl uppercase">Asistencia</h1>
       <PlanillaAsistencia
         key={fecha}
         fecha={fecha}

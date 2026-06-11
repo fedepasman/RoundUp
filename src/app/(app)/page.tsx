@@ -69,7 +69,7 @@ export default async function PaginaInicio() {
             >
               <CardContent className="flex min-h-24 flex-col justify-between gap-2 p-4">
                 <Icono className="size-6" />
-                <span className="text-sm font-semibold leading-tight">
+                <span className="text-base font-semibold leading-tight">
                   {etiqueta}
                 </span>
               </CardContent>
@@ -79,21 +79,21 @@ export default async function PaginaInicio() {
       </section>
 
       <section className="flex flex-col gap-2">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+        <h2 className="text-base font-semibold uppercase tracking-wide text-muted-foreground">
           Resumen
         </h2>
         <Card>
           <CardContent className="flex items-baseline justify-between p-4">
-            <span className="text-sm text-muted-foreground">
+            <span className="text-base text-muted-foreground">
               Alumnos totales
             </span>
-            <span className="numeros-marca text-3xl">{totalAlumnos ?? 0}</span>
+            <span className="numeros-marca text-4xl">{totalAlumnos ?? 0}</span>
           </CardContent>
         </Card>
         {!!ultimosAlumnos?.length && (
           <Card>
             <CardContent className="flex flex-col gap-2 p-4">
-              <span className="text-sm text-muted-foreground">
+              <span className="text-base text-muted-foreground">
                 Últimos alumnos
               </span>
               <ul className="flex flex-col gap-1">
@@ -101,10 +101,10 @@ export default async function PaginaInicio() {
                   <li key={alumno.id}>
                     <Link
                       href={`/alumnos/${alumno.id}`}
-                      className="flex items-center justify-between text-sm font-medium"
+                      className="flex items-center justify-between text-base font-medium"
                     >
                       {alumno.nombre} {alumno.apellido}
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-sm text-muted-foreground">
                         {alumno.origen === "formulario" ? "se inscribió" : ""}
                       </span>
                     </Link>
@@ -117,7 +117,7 @@ export default async function PaginaInicio() {
         {medicionesRecientes && medicionesRecientes.length > 0 && (
           <Card>
             <CardContent className="flex flex-col gap-2 p-4">
-              <span className="text-sm text-muted-foreground">
+              <span className="text-base text-muted-foreground">
                 Mediciones recientes
               </span>
               <ul className="flex flex-col gap-1">
@@ -128,7 +128,7 @@ export default async function PaginaInicio() {
                   };
                   const ej = m.ejercicios as unknown as { nombre: string };
                   return (
-                    <li key={i} className="text-xs text-muted-foreground">
+                    <li key={i} className="text-sm text-muted-foreground">
                       {alumno.nombre} {alumno.apellido} —{" "}
                       <span className="font-medium text-foreground">
                         {ej.nombre}
@@ -145,7 +145,7 @@ export default async function PaginaInicio() {
         {asistenciasRecientes && asistenciasRecientes.length > 0 && (
           <Card>
             <CardContent className="flex flex-col gap-2 p-4">
-              <span className="text-sm text-muted-foreground">
+              <span className="text-base text-muted-foreground">
                 Asistencias recientes
               </span>
               <ul className="flex flex-col gap-1">
@@ -155,7 +155,7 @@ export default async function PaginaInicio() {
                     apellido: string;
                   };
                   return (
-                    <li key={i} className="text-xs">
+                    <li key={i} className="text-sm">
                       <span className="text-muted-foreground">
                         {alumno.nombre} {alumno.apellido}
                       </span>{" "}

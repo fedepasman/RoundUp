@@ -37,7 +37,7 @@ export default async function PaginaAlumnos({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <h1 className="font-display text-3xl uppercase">Alumnos</h1>
+        <h1 className="font-display text-4xl uppercase">Alumnos</h1>
         <Button asChild className="h-11">
           <Link href="/alumnos/nuevo">
             <UserPlus className="size-4" />
@@ -59,7 +59,7 @@ export default async function PaginaAlumnos({
 
       {!alumnos?.length ? (
         <Card>
-          <CardContent className="p-6 text-center text-sm text-muted-foreground">
+          <CardContent className="p-6 text-center text-base text-muted-foreground">
             {q
               ? `No encontramos alumnos para “${q}”.`
               : "Todavía no hay alumnos. Cargá el primero con “Nuevo”."}
@@ -76,7 +76,7 @@ export default async function PaginaAlumnos({
                       <p className="font-semibold">
                         {alumno.apellido}, {alumno.nombre}
                       </p>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-base text-muted-foreground">
                         {calcularEdad(alumno.fecha_nacimiento)} años
                       </p>
                     </div>

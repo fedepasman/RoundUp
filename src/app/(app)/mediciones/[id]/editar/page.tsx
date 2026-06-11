@@ -69,7 +69,7 @@ export default async function PaginaEditarMedicion({
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <h1 className="font-display text-3xl uppercase">Editar medición</h1>
+        <h1 className="font-display text-4xl uppercase">Editar medición</h1>
         <p className="text-muted-foreground">
           {alumno.apellido}, {alumno.nombre} · {ejercicio.nombre} · {formatearFecha(medicion.fecha)}
         </p>

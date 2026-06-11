@@ -69,21 +69,21 @@ export function EtapasVisualizacion({
                 <Check className="size-5" />
               </div>
 
-              <span className="flex-1 text-sm font-medium">
+              <span className="flex-1 text-base font-medium">
                 {i + 1}. {etapa.nombre}
               </span>
 
               {actual ? (
                 <div className="flex items-center gap-1">
-                  <span className="numeros-marca text-sm font-semibold">
+                  <span className="numeros-marca text-base font-semibold">
                     {repsEnEtapaActual}
                   </span>
-                  <span className="numeros-marca text-sm text-muted-foreground">
+                  <span className="numeros-marca text-base text-muted-foreground">
                     /{etapa.objetivo}
                   </span>
                 </div>
               ) : (
-                <span className="numeros-marca text-sm text-muted-foreground">
+                <span className="numeros-marca text-base text-muted-foreground">
                   {completa ? etapa.objetivo : 0}/{etapa.objetivo}
                 </span>
               )}
@@ -94,8 +94,8 @@ export function EtapasVisualizacion({
 
       <div className="flex flex-col gap-1">
         <div className="flex items-baseline justify-between">
-          <span className="text-sm font-semibold">Progreso</span>
-          <span className="numeros-marca text-sm">
+          <span className="text-base font-semibold">Progreso</span>
+          <span className="numeros-marca text-base">
             {Math.min(valor, objetivoTotal)}/{objetivoTotal} · {porcentaje}%
           </span>
         </div>
@@ -115,11 +115,11 @@ export function EtapasVisualizacion({
 
       {tiempoMostrado !== null && (
         <div className="flex items-center justify-between rounded-lg border bg-accent px-3 py-2">
-          <div className="flex items-center gap-2 text-sm font-semibold">
+          <div className="flex items-center gap-2 text-base font-semibold">
             <Timer className="size-4" />
             Tiempo
           </div>
-          <span className="numeros-marca text-lg font-bold">
+          <span className="numeros-marca text-xl font-bold">
             {formatearSegundos(tiempoMostrado)}
           </span>
         </div>

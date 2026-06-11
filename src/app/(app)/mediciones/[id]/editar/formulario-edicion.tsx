@@ -78,7 +78,7 @@ export function FormularioEdicion({
                   ? formatearSegundos(v.valor)
                   : String(v.valor)
               }
-              className="numeros-marca h-12 text-lg"
+              className="numeros-marca h-12 text-xl"
               {...(v.tipo_medicion === "tiempo"
                 ? {
                     type: "text",
@@ -107,9 +107,9 @@ export function FormularioEdicion({
                       ? formatearSegundos(v.tiempo_segundos)
                       : ""
                   }
-                  className="numeros-marca h-12 text-lg"
+                  className="numeros-marca h-12 text-xl"
                 />
-                <p className="text-xs text-muted-foreground">
+                <p className="text-sm text-muted-foreground">
                   {objetivo !== null
                     ? `Objetivo: ${objetivo} reps. Si no completó, se asigna ${formatearSegundos(v.tiempo_limite_segundos ?? 1800)} automáticamente.`
                     : ""}
@@ -121,23 +121,23 @@ export function FormularioEdicion({
       })}
 
       {estado && !estado.ok && (
-        <p role="alert" className="text-sm font-medium text-destructive">
+        <p role="alert" className="text-base font-medium text-destructive">
           {estado.error}
         </p>
       )}
 
-      <Button type="submit" disabled={pendiente} className="h-12 text-base">
+      <Button type="submit" disabled={pendiente} className="h-12 text-lg">
         {pendiente ? "Guardando…" : "Guardar cambios"}
       </Button>
 
       {esAdmin && (
         <div className="border-t pt-4">
           {deleteError && (
-            <p className="mb-2 text-sm text-destructive">{deleteError}</p>
+            <p className="mb-2 text-base text-destructive">{deleteError}</p>
           )}
           {confirmDelete ? (
             <div className="flex flex-col gap-2">
-              <p className="text-sm font-medium text-destructive">
+              <p className="text-base font-medium text-destructive">
                 ¿Seguro que querés eliminar esta medición? No se puede deshacer.
               </p>
               <div className="flex gap-2">
