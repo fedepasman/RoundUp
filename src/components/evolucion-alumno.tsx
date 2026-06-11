@@ -137,8 +137,13 @@ export function EvolucionAlumno({
             <ChevronLeft className="mr-1 size-4" />
             Anterior
           </Button>
-          <div className="flex flex-1 items-center justify-center text-xs text-muted-foreground">
-            {Math.min(indiceMedicion, delEjercicio.length - 1) + 1} de {delEjercicio.length}
+          <div className="flex flex-1 flex-col items-center justify-center gap-0.5 text-center">
+            <span className="text-xs font-semibold">
+              {formatearFecha(delEjercicio[indiceValido]?.fecha ?? "")}
+            </span>
+            <span className="text-xs text-muted-foreground">
+              {indiceValido + 1} de {delEjercicio.length}
+            </span>
           </div>
           <Button
             variant="outline"
