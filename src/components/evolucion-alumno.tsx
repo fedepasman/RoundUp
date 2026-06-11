@@ -21,7 +21,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Pencil } from "lucide-react";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { EtapasVisualizacion } from "@/app/(app)/alumnos/etapas-visualizacion";
@@ -61,11 +62,13 @@ export function EvolucionAlumno({
   posiciones = {},
   posicionesTotales = {},
   ejercicioIdInicial,
+  rol,
 }: {
   mediciones: MedicionHistorial[];
   posiciones?: Record<string, { posicion: number; total: number }>;
   posicionesTotales?: Record<string, { posicion: number; total: number }>;
   ejercicioIdInicial?: string;
+  rol?: string;
 }) {
   const ejercicios = [
     ...new Map(
@@ -154,6 +157,18 @@ export function EvolucionAlumno({
           >
             Siguiente
             <ChevronRight className="ml-1 size-4" />
+          </Button>
+        </div>
+      )}
+
+      {/* Botón editar para la medición actual */}
+      {rol && ["admin", "profesor"].includes(rol) && delEjercicio[indiceValido] && (
+        <div className="flex justify-end">
+          <Button variant="outline" size="sm" asChild>
+            <Link href={`/mediciones/${delEjercicio[indiceValido].id}/editar`}>
+              <Pencil className="mr-1 size-3" />
+              Editar esta medición
+            </Link>
           </Button>
         </div>
       )}

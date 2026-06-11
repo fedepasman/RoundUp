@@ -30,13 +30,16 @@ export default async function PaginaFichaAlumno({
   const { ejercicio: ejercicioIdParam } = await searchParams;
   const supabase = await createClient();
 
-  const { data: alumno } = await supabase
-    .from("alumnos")
-    .select("*")
-    .eq("id", id)
-    .single();
+  const { data: { user } } = await supabase.auth.getUser();
+  const [{ data: alumno }, { data: perfil }] = await Promise.all([
+    supabase.from("alumnos").select("*").eq("id", id).single(),
+    user
+      ? supabase.from("profiles").select("rol").eq("id", user.id).single()
+      : Promise.resolve({ data: null }),
+  ]);
 
   if (!alumno) notFound();
+  const rol = perfil?.rol ?? "profesor";
 
   const [{ data: asistencias }, { data: medicionesCrudas }] =
     await Promise.all([
@@ -232,6 +235,7 @@ export default async function PaginaFichaAlumno({
             posiciones={posiciones}
             posicionesTotales={posicionesTotales}
             ejercicioIdInicial={ejercicioIdParam}
+            rol={rol}
           />
         </TabsContent>
       </Tabs>
