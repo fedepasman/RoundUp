@@ -15,17 +15,17 @@ import { SelectorRanking } from "./selector-ranking";
 
 export const metadata: Metadata = { title: "Rankings" };
 
-const ESTILO_PUESTO = {
-  0: "border-yellow-400 bg-yellow-100",
-  1: "border-gray-400 bg-gray-200",
-  2: "border-orange-400 bg-orange-100",
-} as const;
+const ESTILO_PUESTO = [
+  "border-yellow-400 bg-yellow-100",
+  "border-gray-400 bg-gray-200",
+  "border-orange-400 bg-orange-100",
+] as const;
 
-const ESTILO_NUMERO = {
-  0: "text-yellow-600",
-  1: "text-gray-500",
-  2: "text-orange-700",
-} as const;
+const ESTILO_NUMERO = [
+  "text-yellow-600",
+  "text-gray-500",
+  "text-orange-700",
+] as const;
 
 export default async function PaginaRankings({
   searchParams,
@@ -106,14 +106,14 @@ export default async function PaginaRankings({
               <Link href={`/alumnos/${puesto.alumno_id}?ejercicio=${ejercicio.id}`}>
                 <Card
                   className={
-                    indice < 3 ? ESTILO_PUESTO[indice as keyof typeof ESTILO_PUESTO] : undefined
+                    indice < 3 ? ESTILO_PUESTO[indice] : undefined
                   }
                 >
                   <CardContent className="flex items-center gap-3 p-4">
                     <span
                       className={cn(
                         "numeros-marca w-8 shrink-0 text-center text-2xl font-bold",
-                        indice < 3 ? ESTILO_NUMERO[indice as keyof typeof ESTILO_NUMERO] : "text-muted-foreground",
+                        indice < 3 ? ESTILO_NUMERO[indice] : "text-muted-foreground",
                       )}
                     >
                       {indice + 1}
