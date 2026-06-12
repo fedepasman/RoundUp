@@ -1,12 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo } from "next/font/google";
+import { Inter } from "next/font/google";
 import { PWARegister } from "@/components/pwa-register";
 import "./globals.css";
 
-const archivo = Archivo({
+const inter = Inter({
   variable: "--font-sans",
   subsets: ["latin"],
-  axes: ["wdth"],
 });
 
 export const metadata: Metadata = {
@@ -32,7 +31,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#c4233b",
+  themeColor: "#000000",
   width: "device-width",
   initialScale: 1,
   minimumScale: 1,
@@ -46,7 +45,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${archivo.variable} h-full antialiased`}>
+    <html lang="es" className={`${inter.variable} h-full antialiased`}>
       <head>
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
