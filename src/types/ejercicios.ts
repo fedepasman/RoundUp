@@ -20,6 +20,7 @@ export type EjercicioModulo = {
   unidad: string | null;
   orden: number;
   etapas: Etapa[] | null;
+  descripcion: string | null;
 };
 
 export type EjercicioConModulos = Ejercicio & {

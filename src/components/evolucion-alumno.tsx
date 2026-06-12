@@ -46,6 +46,7 @@ export type ValorMedido = {
   orden: number;
   etapas: Etapa[] | null;
   tiempo_limite_segundos: number | null;
+  descripcion: string | null;
   valor: number;
   tiempo_segundos: number | null;
 };
@@ -209,6 +210,11 @@ export function EvolucionAlumno({
                     <p className="text-base font-semibold">
                       {modulo.modulo_nombre}
                     </p>
+                    {modulo.descripcion && (
+                      <p className="whitespace-pre-line text-sm text-muted-foreground">
+                        {modulo.descripcion}
+                      </p>
+                    )}
                     <p className="text-sm text-muted-foreground">
                       {serie.length}{" "}
                       {serie.length === 1 ? "medición" : "mediciones"}

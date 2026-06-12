@@ -214,6 +214,11 @@ export function FormularioMedicion({
                     {modulo.nombre}
                     {modulo.unidad ? ` (${modulo.unidad})` : ""}
                   </Label>
+                  {modulo.descripcion && (
+                    <p className="whitespace-pre-line text-sm text-muted-foreground">
+                      {modulo.descripcion}
+                    </p>
+                  )}
                   <EtapasMedicion
                     moduloId={modulo.id}
                     etapas={modulo.etapas}
@@ -225,6 +230,11 @@ export function FormularioMedicion({
                     {modulo.nombre}
                     {modulo.unidad ? ` (${modulo.unidad})` : ""}
                   </Label>
+                  {modulo.descripcion && (
+                    <p className="whitespace-pre-line text-sm text-muted-foreground">
+                      {modulo.descripcion}
+                    </p>
+                  )}
                   <Input
                     id={`valor_${modulo.id}`}
                     name={`valor_${modulo.id}`}

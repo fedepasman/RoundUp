@@ -21,6 +21,7 @@ type ValorEditable = {
   orden: number;
   etapas: Etapa[] | null;
   tiempo_limite_segundos: number | null;
+  descripcion: string | null;
   valor: number;
   tiempo_segundos: number | null;
 };
@@ -69,6 +70,11 @@ export function FormularioEdicion({
               {v.modulo_nombre}
               {v.unidad ? ` (${v.unidad})` : ""}
             </Label>
+            {v.descripcion && (
+              <p className="whitespace-pre-line text-sm text-muted-foreground">
+                {v.descripcion}
+              </p>
+            )}
             <Input
               id={`valor_${v.modulo_id}`}
               name={`valor_${v.modulo_id}`}
