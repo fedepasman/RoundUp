@@ -1,4 +1,4 @@
-import { LogOut, ShieldUser } from "lucide-react";
+import { LayoutDashboard, LogOut, ShieldUser } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -34,6 +34,18 @@ export default async function AppLayout({
             RoundUp
           </Link>
           <div className="flex items-center gap-1">
+            {perfil?.rol !== "alumno" && (
+              <Button
+                asChild
+                variant="ghost"
+                size="icon"
+                aria-label="Panel de métricas"
+              >
+                <Link href="/dashboard">
+                  <LayoutDashboard className="size-5" />
+                </Link>
+              </Button>
+            )}
             {esAdmin && (
               <Button asChild variant="ghost" size="icon" aria-label="Usuarios">
                 <Link href="/admin/usuarios">
